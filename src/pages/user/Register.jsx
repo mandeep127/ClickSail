@@ -8,7 +8,6 @@ import { FaUser } from "react-icons/fa";
 import { FaLocationCrosshairs } from "react-icons/fa6";
 import { RiUserSearchFill } from "react-icons/ri";
 
-import { Link } from 'react-router-dom';
 
 const UserRegister = () => {
   return (

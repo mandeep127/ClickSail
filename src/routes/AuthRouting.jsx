@@ -6,7 +6,8 @@ import UserRegister from '../pages/user/Register'
 import UserForgotPassword from '../pages/user/ForgotPassword'
 import UserResetPassword from '../pages/user/ResetPassword'
 
-const Routing = () => {
+
+const AuthRouting = () => {
   return (
   <>
    <Routes>
@@ -15,9 +16,10 @@ const Routing = () => {
     <Route path="/register" element={<UserRegister />} />
     <Route path="/forgot-password" element={<UserForgotPassword />} />
     <Route path="/reset-password" element={<UserResetPassword />} />
+
    </Routes>
   </>
   )
 }
 
-export default Routing
+export default AuthRouting

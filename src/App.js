@@ -1,12 +1,12 @@
-import React from 'react'
-import Routing from './routes/Routing'
+import React from "react";
+import Layouts from "./component/user/Layouts";
 
 function App() {
   return (
-      <>
-      <Routing />
-      </>
-  )
+    <>
+      <Layouts />
+    </>
+  );
 }
 
-export default App
+export default App;
