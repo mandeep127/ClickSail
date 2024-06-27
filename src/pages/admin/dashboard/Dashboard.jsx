@@ -11,13 +11,12 @@ const Dashboard = () => {
   <>
   <Container>
     <Row>
-      <Col>
+      <Col style={{ height : "100%" , width :"20%"}}>
           <Sidebar />
-          </Col>
-          <Col>
-
+      </Col>
+      <Col>
            <Header />
-           </Col>
+      </Col>
 
      </Row>
   </Container>
