@@ -9,7 +9,7 @@ import adminLTELogo from "../../assets/AdminLTELogo.png";
 const Sidebar = () => {
   return (
   <>
-   <span class="logo brand-text font-weight-heavy"><b>A-M Darji </b><small>Dashboard</small></span>
+   <span class="logo brand-text font-weight-heavy"><b>ClickSail </b><small>Dashboard</small></span>
   </>
 )
 };
