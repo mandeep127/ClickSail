@@ -1,23 +1,22 @@
-import React from 'react'
-import Header from './Header'
-import Footer from './Footer'
-import AuthRouting from '../../routes/AuthRouting'
-import WelcomePage from './Welcome'
+import React from "react";
+import Header from "./Header";
+import Footer from "./Footer";
+import WelcomePage from "./Welcome";
+import AuthRouting from "../../routes/AuthRouting";
+import UserRouting from "../../routes/UserRouting";
 
 const Layouts = () => {
   return (
- <>
- <div className="d-flex flex-column h-100">
-      <Header />
+    <>
+      <div className="d-flex flex-column h-100">
+        <Header />
         <div className="flex-grow-1">
-        {/* <AuthRouting /> */}
-        <WelcomePage />
+          <UserRouting />
         </div>
         <Footer />
       </div>
-    
- </>
-  )
-}
+    </>
+  );
+};
 
-export default Layouts
+export default Layouts;

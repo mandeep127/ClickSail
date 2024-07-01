@@ -1,11 +1,5 @@
 import React from "react";
-import { Container, Row, Col, Button } from "react-bootstrap";
-import HeroImg from "../../assets/hero.png";
-import Img from "../../assets/T-Shirt-25.jpg";
-import whyImg from "../../assets/why-choose-us-img.jpg";
-import ImgGrid1 from "../../assets/img-grid-1.jpg";
-import ImgGrid2 from "../../assets/img-grid-2.jpg";
-import ImgGrid3 from "../../assets/img-grid-3.jpg";
+import { Container, Row, Col, Button, Carousel, Image } from "react-bootstrap";
 import {
   AiOutlineTruck,
   AiOutlineShopping,
@@ -14,12 +8,43 @@ import {
 } from "react-icons/ai";
 import "../../index.css";
 import { Link } from "react-router-dom";
+import HeroImg from "../../assets/hero.png";
+import Img from "../../assets/T-Shirt-25.jpg";
+import whyImg from "../../assets/why-choose-us-img.jpg";
+import ImgGrid1 from "../../assets/img-grid-1.jpg";
+import ImgGrid2 from "../../assets/img-grid-2.jpg";
+import ImgGrid3 from "../../assets/img-grid-3.jpg";
+import person1 from "../../assets/person-1.png";
+import person2 from "../../assets/person-2.png";
+import person3 from "../../assets/person-3.png";
 
 const WelcomePage = () => {
+  // Categories
   const categories = [
     { id: 1, name: "Category 1", image: Img },
     { id: 2, name: "Category 2", image: Img },
     { id: 3, name: "Category 3", image: Img },
+  ];
+  // Testimonial
+  const testimonials = [
+    {
+      quote:
+        "I was blown away by the quality of the craftsmanship and attention to detail in my tailored garment. It fit perfectly and exceeded my expectations.",
+      author: "Sarah L",
+      image: person2,
+    },
+    {
+      quote:
+        "The personalized fit I received was outstanding. The tailors took the time to understand my preferences and measurements, resulting in a garment that felt like it was made just for me.",
+      author: "John M",
+      image: person3,
+    },
+    {
+      quote:
+        "The customer service I received was exceptional. The team was attentive, helpful, and went above and beyond to ensure my satisfaction throughout the entire process.",
+      author: "Emma K",
+      image: person1,
+    },
   ];
   return (
     <>
@@ -227,7 +252,7 @@ const WelcomePage = () => {
                 </ul>
                 <Button
                   href="/shop/all"
-                  className="border border-white text-warning rounded-pill mt-3 px-5 py-3 "
+                  className="text-warning rounded-pill mt-3 px-5 py-3 "
                 >
                   <span className="fw-bold ">Explore</span>
                 </Button>
@@ -238,6 +263,60 @@ const WelcomePage = () => {
 
         {/*End we help */}
       </div>
+
+      {/* Start Testimonials Section */}
+
+      <Row className="justify-content-center mt-5 pt-5 mb-5 ">
+        <Col lg={8} className="text-center">
+          <h2 className="section-title">Testimonials</h2>
+        </Col>
+      </Row>
+      <Row className="justify-content-center">
+        <Col lg={10}>
+          <Carousel
+            pause={false}
+            nextIcon={
+              <span className="carousel-control-next-icon rounded-circle bg-black pt-5 pe-4 " />
+            }
+            prevIcon={
+              <span className="carousel-control-prev-icon rounded-circle bg-black pt-5 pe-4" />
+            }
+          >
+            {testimonials.map((testimonial, id) => (
+              <Carousel.Item key={id}>
+                <div className="position-relative d-flex justify-content-center align-items-center">
+                  <div
+                    className="d-flex flex-column align-items-center mt-3"
+                    style={{ height: "200px" }}
+                  >
+                    <Image
+                      className="d-block rounded-circle"
+                      src={testimonial.image}
+                      alt={testimonial.author}
+                      style={{
+                        width: "60px",
+                        height: "60px",
+                      }}
+                    />
+                    <div>
+                      <Carousel.Caption className="text-center text-secondary">
+                        <blockquote className="blockquote">
+                          <p>{testimonial.quote}</p>
+                        </blockquote>
+                        <h3 className="font-weight-bold">
+                          {testimonial.author}.
+                        </h3>
+                      </Carousel.Caption>
+                    </div>
+                  </div>
+                </div>
+              </Carousel.Item>
+            ))}
+          </Carousel>
+        </Col>
+      </Row>
+
+      {/* End Testimonials Section */}
     </>
   );
 };

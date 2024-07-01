@@ -44,6 +44,8 @@ body {
 
 .product-item .img-fluid {
   transition: transform 0.5s ease;
+  max-width: 312px;
+  height: auto;
 }
 
 .product-item:hover .img-fluid {
@@ -68,7 +70,10 @@ body {
   transform: translateY(0);
 }
 
-
+.img-md{
+  width: 96px;
+  height: 96px;
+}
 
 
 .footer-section .footer-img img {
