@@ -5,6 +5,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import { FaShoppingCart } from "react-icons/fa";
 import { FaCircleUser } from "react-icons/fa6";
 import { AiOutlineUser } from "react-icons/ai";
+import "../../../src/index.css";
 
 
 import NavDropdown from 'react-bootstrap/NavDropdown';
@@ -13,9 +14,9 @@ const Header = () => {
   const userName = 'userName';
   return (
 <>
-<Navbar expand="lg" className="bg-body-tertiary py-5" >
+<Navbar expand="lg" className="custom-navbar py-5 " >
       <Container>
-        <Navbar.Brand href="index.html" style={{ fontSize: '2rem', fontWeight: 'bold' }}> Click Sail<span>.</span></Navbar.Brand>
+        <Navbar.Brand href="index.html" className='fs-1 fw-bold text-white'> Click Sail<span>.</span></Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarsClickSail" />
         <Navbar.Collapse id="navbarsClickSail">
           <Nav className="ms-auto fs-5">
@@ -33,9 +34,9 @@ const Header = () => {
                 <NavDropdown.Divider />
                 <NavDropdown.Item href="#">Logout</NavDropdown.Item>
               </NavDropdown>
-          <Nav className="ms-3 fs-4">
-            <Nav.Link href="#"><AiOutlineUser /></Nav.Link>
-            <Nav.Link href="cart.html"><FaShoppingCart /></Nav.Link>
+          <Nav className="ms-3 fs-">
+            <Nav.Link href="#"><AiOutlineUser size={20} /></Nav.Link>
+            <Nav.Link href="cart.html"><FaShoppingCart  size={20}/></Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

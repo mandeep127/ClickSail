@@ -13,12 +13,23 @@ body {
 /* user interface */
 /* Start */
 
-.lineHeight{
-  line-height: 2.3;
+/* start header */
+.custom-navbar {
+  background-color: #3b5d50;
+  color: #fff;
+  transition: all 0.3s ease; 
 }
+.custom-navbar .nav-link,
+.custom-navbar  {
+  color: white !important; 
+  font-weight: 400;
+}
+/* End header */
+
 .gray-text {
   color: gray;
 }
+
 
 .footer-section .footer-img {
   position: absolute;
@@ -45,7 +56,6 @@ body {
   bottom: 0;
   left: 0;
   width: 100%;
-  background-color: rgba(255, 255, 255, 0.8);
   padding: 10px 0;
   margin: 0;
   opacity: 0;
@@ -96,7 +106,7 @@ body {
       top: 0px;
       right: 0px;
       z-index: 2;
-      max-width: 710px;
+      max-width: 796px;
       left: -20px; }
       @media (min-width: 768px) {
         .hero .hero-img-wrap img {
@@ -163,11 +173,94 @@ body {
                 border-color: white;
                 color: #ffffff; }
 
-                .explore-button {
-                  color: #f8b810;
-                }
+  .explore-button {
+   color: #f8b810;
+                }      
+  /* why choose us */
+ 
+  .why-choose-section .img-wrap:before {
+    position: absolute;
+    content: "";
+    width: 255px;
+    height: 217px;
+    background-image: url("./assets/dots-yellow.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    -webkit-transform: translate(-40%, -40%);
+    -ms-transform: translate(-40%, -40%);
+    transform: translate(-40%, -40%);
+    z-index: -1;
+    -moz-transform: translate(-40%, -40%);
+    -o-transform: translate(-40%, -40%);
+   }
 
-                
+   .feature {
+    position: relative; /* Ensure relative positioning for absolute positioning of pseudo-element */
+    overflow: hidden; /* Ensure that overflow does not affect the layout */
+  }
+  
+  .feature::before {
+    content: ''; /* Required for pseudo-elements */
+    position: absolute; /* Position relative to the .feature container */
+    top: 10px; /* Adjust the distance from the top */
+    right: 263px; /* Adjust the distance from the right */
+    bottom: 95px; /* Adjust the distance from the bottom */
+    left: 15px; /* Adjust the distance from the left */
+    background-color: #CBD5D1; /* Gray background color */
+    border-radius: 50%; /* Make the background round */
+    z-index: -10; /* Ensure the background is behind the content */
+  }
+  
+  
+  
+
+   /* we help you */
+    .we-help-section .imgs-grid {
+      display: -ms-grid;
+      display: grid;
+      -ms-grid-columns: repeat(27, 1fr);
+      grid-template-columns: repeat(27, 1fr);
+      position: relative;}
+      .we-help-section .imgs-grid:before {
+        position: absolute;
+        content: "";
+        width: 255px;
+        height: 217px;
+        background-image: url("./assets/dots-green.svg");
+        background-size: contain;
+        background-repeat: no-repeat;
+        -webkit-transform: translate(-40%, -40%);
+        -ms-transform: translate(-40%, -40%);
+        transform: translate(-40%, -40%);
+        z-index: -1; }
+      .we-help-section .imgs-grid .grid {
+        position: relative; }
+        .we-help-section .imgs-grid .grid img {
+          border-radius: 20px;
+          max-width: 100%; }
+        .we-help-section .imgs-grid .grid.grid-1 {
+          -ms-grid-column: 1;
+          -ms-grid-column-span: 18;
+          grid-column: 1 / span 18;
+          -ms-grid-row: 1;
+          -ms-grid-row-span: 27;
+          grid-row: 1 / span 27; }
+        .we-help-section .imgs-grid .grid.grid-2 {
+          -ms-grid-column: 19;
+          -ms-grid-column-span: 27;
+          grid-column: 19 / span 27;
+          -ms-grid-row: 1;
+          -ms-grid-row-span: 5;
+          grid-row: 1 / span 5;
+          padding-left: 20px; }
+        .we-help-section .imgs-grid .grid.grid-3 {
+          -ms-grid-column: 14;
+          -ms-grid-column-span: 16;
+          grid-column: 14 / span 16;
+          -ms-grid-row: 6;
+          -ms-grid-row-span: 27;
+          grid-row: 6 / span 27;
+          padding-top: 20px; }
 /* end */
 
 

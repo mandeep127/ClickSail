@@ -9,7 +9,7 @@ const Layouts = () => {
  <>
  <div className="d-flex flex-column h-100">
       <Header />
-        <div className="flex-grow-1 p-3">
+        <div className="flex-grow-1">
         {/* <AuthRouting /> */}
         <WelcomePage />
         </div>
