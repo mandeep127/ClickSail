@@ -1,11 +1,31 @@
-import React from 'react'
+import React from 'react';
+import { Container, Row, Col } from 'react-bootstrap';
+import { FaExternalLinkAlt } from 'react-icons/fa';
 
-const Footer = () => {
+function Footer() {
   return (
-      <>
-      <h3>footer</h3>
-      </>
-  )
+    <footer className="main-footer border-top">
+      <Container fluid className='p-3'>
+        <Row>
+          <Col>
+            <p>
+              <strong>
+                Copyright &copy;{' '}
+                <a href="/admin/dashboard">ClickSail</a>.
+              </strong>
+            </p>
+          </Col>
+          <Col className="text-right text-end">
+            <p>
+              <strong>
+                <FaExternalLinkAlt /> Version 3.2.0
+              </strong>
+            </p>
+          </Col>
+        </Row>
+      </Container>
+    </footer>
+  );
 }
 
-export default Footer
+export default Footer;

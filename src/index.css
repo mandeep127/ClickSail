@@ -12,6 +12,13 @@ body {
 
 }
 
+#AdminImg{
+  margin-right: 2px; 
+}
+.input-group-custom {
+  width: 50px;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

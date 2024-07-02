@@ -1,10 +1,12 @@
 import React from 'react'
-import Routing from './routes/Routing'
-
+import AuthRouting from './routes/AuthRouting'
+import Layout from './components/admin/Layout'
 function App() {
   return (
       <>
-      <Routing />
+      <AuthRouting />
+      
+      <Layout />
       </>
   )
 }
