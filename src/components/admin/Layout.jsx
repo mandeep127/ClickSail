@@ -1,23 +1,27 @@
 import React from "react";
-import Header from "./Navbar";
-import Sidebar from "./Sidebar";
-import Footer from "./Footer";
+import AdminHeader from "./Navbar";
+import AdminSidebar from "./Sidebar";
+import AdminFooter from "./Footer";
 import Routing from "../../routes/Routing";
+import { useLocation } from "react-router-dom";
 
 const Layout = () => {
+
+  const params=useLocation()
+
   return (
     <>
     <div className="layout d-flex flex-column vh-100">
       <div className="d-flex flex-grow-1">
         <div className="sidebar">
-          <Sidebar />
+          <AdminSidebar />
         </div>
         <div className="d-flex flex-column flex-grow-1 overflow-hidden">
-          <Header />
+          <AdminHeader />
           <div className="d-flex flex-grow-1 overflow-auto">
             <Routing />
           </div>
-          <Footer />
+          <AdminFooter />
         </div>
       </div>
     </div>

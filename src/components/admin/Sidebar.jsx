@@ -14,7 +14,7 @@ import adminLTELogo from "../../assets/AdminLTELogo.png";
 
 import { FaUserTie } from "react-icons/fa";
 
-const Sidebar = () => {
+const AdminSidebar = () => {
   const tiles = [
     {
       eventKey: 0,
@@ -116,4 +116,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default AdminSidebar;

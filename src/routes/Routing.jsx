@@ -22,18 +22,14 @@ const Routing = () => {
   return (
     <>
       <Routes>
-        <Route
-          path="/admin/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/admin/dashboard" element={<Dashboard />} />
         <Route path="/admin/user/list" element={<List />} />
         <Route path="/admin/user/add" element={<AddUser />} />
         <Route path="/admin/categories/list" element={<Categorieslist />} />
-        <Route path="/admin/subcategories/list" element={<SubCategoriesList />}/>
+        <Route
+          path="/admin/subcategories/list"
+          element={<SubCategoriesList />}
+        />
         <Route path="/admin/product/list" element={<ProductList />} />
         <Route path="/admin/sales/list" element={<Orders />} />
         <Route path="/admin/transactions/list" element={<Transactions />} />
