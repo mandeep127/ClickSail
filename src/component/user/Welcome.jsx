@@ -125,7 +125,7 @@ const WelcomePage = () => {
                         alt={category.name}
                         className="img-fluid product-thumbnail rounded-4 rounded-bottom-0"
                       />
-                      <h3 className="product-title fw-bold text-center text-warning bg-light display-5 fs-5 pt-3">
+                      <h3 className="product-title fw-bold text-center text-white bg-secondary display-5 fs-5 pt-3 ">
                         {category.name}
                       </h3>
                     </a>

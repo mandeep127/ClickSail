@@ -10,11 +10,6 @@ const ShowCart = () => {
     { id: 3, product_title: "Product 3", quantity: 3, price: 75 },
   ]);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Handle form submission logic here
-  };
-
   const [showDeleteModal, setShowDeleteModal] = useState(null);
 
   const handleDeleteConfirmation = (id) => {
@@ -32,6 +27,19 @@ const ShowCart = () => {
     handleCloseDeleteModal();
   };
 
+  const handleQuantityChange = (id, newQuantity) => {
+    // Update the quantity of the specific item in the cart
+    const updatedCart = cart.map((item) =>
+      item.id === id ? { ...item, quantity: newQuantity } : item
+    );
+    setCart(updatedCart);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    // Handle form submission logic here
+  };
+
   return (
     <div className="container" style={{ paddingBottom: "100px" }}>
       <div className="mt-5"></div>
@@ -47,33 +55,9 @@ const ShowCart = () => {
                 <thead>
                   <tr>
                     <th className="text-dark fs-5 p-3">Product Name</th>
-                    <th
-                      style={{
-                        padding: "5px",
-                        fontSize: "12px",
-                        color: "white",
-                      }}
-                    >
-                      Quantity
-                    </th>
-                    <th
-                      style={{
-                        padding: "5px",
-                        fontSize: "12px",
-                        color: "white",
-                      }}
-                    >
-                      Price
-                    </th>
-                    <th
-                      style={{
-                        padding: "5px",
-                        fontSize: "12px",
-                        color: "white",
-                      }}
-                    >
-                      Action
-                    </th>
+                    <th className="text-dark fs-5 p-3">Quantity</th>
+                    <th className="text-dark fs-5 p-3">Price</th>
+                    <th className="text-dark fs-5 p-3">Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -104,7 +88,13 @@ const ShowCart = () => {
                           min="1"
                           max="5"
                           name="quantity[]"
-                          defaultValue={carts.quantity}
+                          value={carts.quantity}
+                          onChange={(e) =>
+                            handleQuantityChange(
+                              carts.id,
+                              parseInt(e.target.value)
+                            )
+                          }
                           style={{ width: "100px" }}
                         />
                       </td>
