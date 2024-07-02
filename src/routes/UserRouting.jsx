@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import WelcomePage from "../component/user/Welcome";
+import WelcomePage from "../components/user/Welcome";
 import Shop from "../pages/user/Product/Shop";
 import ProductDetails from "../pages/user/Product/ProductDetails";
 import ShowCart from "../pages/user/Product/ShowCart";

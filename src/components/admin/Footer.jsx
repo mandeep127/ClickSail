@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { FaExternalLinkAlt } from 'react-icons/fa';
 
-function Footer() {
+function AdminFooter() {
   return (
     <footer className="main-footer border-top">
       <Container fluid className='p-3'>
@@ -28,4 +28,4 @@ function Footer() {
   );
 }
 
-export default Footer;
+export default AdminFooter;

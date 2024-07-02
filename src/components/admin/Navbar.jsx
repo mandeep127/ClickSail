@@ -9,7 +9,7 @@ import {
   FaExpandArrowsAlt,
 } from "react-icons/fa"; // Importing icons from react-icons/fa
 
-const Header = () => {
+const AdminHeader = () => {
   return (
     <Navbar expand="lg" className="main-header navbar navbar-expand border-bottom ">
       {/* Left navbar links */}
@@ -58,4 +58,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default AdminHeader;

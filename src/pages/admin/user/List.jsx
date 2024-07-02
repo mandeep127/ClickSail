@@ -153,8 +153,8 @@ const List = () => {
                         href="#"
                         className={`btn ${
                           user.status === "1"
-                            ? "btn-primary btn-success btn-block"
-                            : "btn-primary btn-danger btn-block"
+                            ? "btn-success btn-block"
+                            : "btn-danger btn-block"
                         }`}
                       >
                         <b>{user.status === "1" ? <FaUnlock /> : <FaLock />}</b>
