@@ -1,0 +1,81 @@
+
+
+.sidebar{
+   width: 22%;
+}
+.custom-dropdown-toggle {
+  background-color:#ebebcf!important;
+  width: fit-content;
+}
+
+.sidebar-side{
+  background-color: #010001;
+}
+.accordion-header button{
+  background-color:#EFEFDF!important;
+  height: 40px;
+  border: rounded-3;
+  
+}
+
+.main-header{
+  background-color: #ebebcf;
+}
+
+.main-footer{
+  background-color: #ebebcf;
+  height:8%;
+}
+
+.custom-container{
+  height: 9rem;
+  width: 14rem;
+}
+
+.dashboardTileRow{
+  background-color: rgb(20, 20, 20);
+}
+
+.admin-profile{
+  height: 21rem;
+  width: 15rem;
+  background-color:#EFEFDF!important;
+
+}
+
+.profile-icon{
+  height: 5rem;
+  width: 5rem;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
