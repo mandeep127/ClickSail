@@ -8,8 +8,6 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 function App() {
   const userCheck = "admin";
   const params = useLocation();
- 
-
 
   return (
     <>

@@ -1,6 +1,6 @@
 import React from "react";
 import { Navbar, Nav, NavDropdown, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   FaBars,
   FaHome,
@@ -10,6 +10,7 @@ import {
 } from "react-icons/fa"; // Importing icons from react-icons/fa
 
 const AdminHeader = () => {
+  const navigate=useNavigate()
   return (
     <Navbar expand="lg" className="main-header navbar navbar-expand border-bottom ">
       {/* Left navbar links */}
@@ -47,7 +48,9 @@ const AdminHeader = () => {
                 <NavDropdown.Item href="#">Orders</NavDropdown.Item>
                 <NavDropdown.Item href="#">Change Password</NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item href="#">Logout</NavDropdown.Item>
+                <NavDropdown.Item onClick={()=>{localStorage.clear()
+                  navigate('/admin/login')
+                }}> Logout</NavDropdown.Item>
               </NavDropdown>
           <Nav.Link href="#">
             <FaExpandArrowsAlt />
