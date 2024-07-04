@@ -121,7 +121,7 @@
          position: absolute;
          width: 255px;
          height: 217px;
-         background-image: url("./assets/dots-light.svg");
+         background-image: url("../../assets/dots-light.svg");
          background-size: contain;
          background-repeat: no-repeat;
          right: -100px;
@@ -145,7 +145,7 @@
                  outline: none !important;
                  -webkit-box-shadow: none;
                  box-shadow: none; }
-               .btn.btn-primary {
+               .btn.btn-primary{
                  background: #3b5d50;
                  border-color: #3b5d50; }
                  .btn.btn-primary:hover {
@@ -176,7 +176,7 @@
        content: "";
        width: 255px;
        height: 217px;
-       background-image: url("./assets/dots-yellow.svg");
+       background-image: url("../../assets/dots-yellow.svg");
        background-repeat: no-repeat;
        background-size: contain;
        -webkit-transform: translate(-40%, -40%);
@@ -219,7 +219,7 @@
            content: "";
            width: 255px;
            height: 217px;
-           background-image: url("./assets/dots-green.svg");
+           background-image: url("../../assets/dots-green.svg");
            background-size: contain;
            background-repeat: no-repeat;
            -webkit-transform: translate(-40%, -40%);
