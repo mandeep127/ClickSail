@@ -1,39 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Container } from "react-bootstrap";
 import Img from "../../../assets/T-Shirt-25.jpg";
+import { useDispatch, useSelector } from "react-redux";
+import { product } from "../../../store/productAPI/productApiSlice";
 const Shop = () => {
-  const products = [
-    {
-      id: 1,
-      name: "Stylish Sunglasses",
-      price: 899,
-      image: Img,
-    },
-    {
-      id: 2,
-      name: "Leather Handbag",
-      price: 2499,
-      image: Img,
-    },
-    {
-      id: 3,
-      name: "Smart Watch",
-      price: 1999,
-      image: Img,
-    },
-    {
-      id: 4,
-      name: "Men's Running Shoes",
-      price: 1599,
-      image: Img,
-    },
-    {
-      id: 5,
-      name: "Men's Running Shoes",
-      price: 1599,
-      image: Img,
-    },
-  ];
+  const dispatch = useDispatch();
+  const { loading, error, authData } = useSelector((state) => state.products);
+
+  useEffect(() => {
+    dispatch(product());
+  }, [dispatch]);
 
   return (
     <>
@@ -51,8 +27,38 @@ const Shop = () => {
       </div>
       {/* End Hero Section */}
 
-      {/* Product Section */}
       <Container>
+        <div className=" product-section pt-5 mt-5 pb-5">
+          {/* Display products from Redux state */}
+          <div className="row">
+            {authData.data?.map((product) => (
+              <div
+                key={product.id}
+                className="col-12 col-md-4 col-lg-3 mb-5 mb-md-0"
+              >
+                {/* Product item UI */}
+                <a
+                  href={`/product/details/${product.id}`}
+                  className="product-item text-decoration-none text-dark"
+                >
+                  <img
+                    src={`http://127.0.0.1:8000${product.image}`}
+                    className="img-fluid rounded-2"
+                    alt={product.name}
+                  />
+                  <h3 className="text-center fs-4 pt-4">{product.name}</h3>
+                  <p className="text-center fs-5 pt-1 pb-4 fw-bold">
+                    <strong>₹{product.price}/-</strong>
+                  </p>
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Container>
+
+      {/* Product Section */}
+      {/* <Container>
         <div className=" product-section pt-5 mt-5 pb-5">
           <div className="row">
             {products.length > 0 ? (
@@ -82,7 +88,7 @@ const Shop = () => {
             )}
           </div>
         </div>
-      </Container>
+      </Container> */}
       {/* End Product Section */}
     </>
   );

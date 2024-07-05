@@ -24,7 +24,7 @@ const WelcomePage = () => {
   const dispatch = useDispatch();
   const { authData } = useSelector((state) => state.categories);
 
-  // console.log(authData, "Welcome");
+  console.log(authData, "Welcome");
 
   useEffect(() => {
     dispatch(welcome());
@@ -110,7 +110,7 @@ const WelcomePage = () => {
                 </p>
                 <Button
                   href="/shop/all"
-                  className="border border-white  text-warning rounded-pill bg-success mt-3 px-5 py-3 "
+                  className="border border-white  text-warning rounded-pill mt-3 px-5 py-3 "
                 >
                   <span className="fw-bold">Explore</span>
                 </Button>
@@ -254,7 +254,7 @@ const WelcomePage = () => {
                 </ul>
                 <Button
                   href="/shop/all"
-                  className="text-warning  rounded-pill mt-3 px-5 py-3 bg-success "
+                  className="text-warning rounded-pill mt-3 px-5 py-3 "
                 >
                   <span className="fw-bold ">Explore</span>
                 </Button>

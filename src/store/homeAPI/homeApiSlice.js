@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { loginUserApi, registerUserApi } from "./authApiServices";
+import { contactApi, homeApi } from "./homeApiServices";
 
 const initialState = {
   loading: false,
@@ -7,64 +7,63 @@ const initialState = {
   authData: "",
 };
 
-export const Login = createAsyncThunk(
-  "user/login",
+export const welcome = createAsyncThunk(
+  "welcome/categories",
   async (credentials, thunkAPI) => {
     try {
-      const response = await loginUserApi(credentials);
-      return response;
+      const response = await homeApi(credentials);
+      return response?.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
     }
   }
 );
 
-export const Register = createAsyncThunk(
-  "user/register",
+export const contact = createAsyncThunk(
+  "welcome/contact",
   async (credentials, thunkAPI) => {
     try {
-      const response = await registerUserApi(credentials);
-      return response;
+      const response = await contactApi(credentials);
+      return response?.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
     }
   }
 );
 
-const loginSlice = createSlice({
-  name: "users",
+const categoriesSlice = createSlice({
+  name: "categories",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(Login.pending, (state) => {
+      .addCase(welcome.pending, (state) => {
         state.loading = true;
         state.error = "";
       })
-      .addCase(Login.fulfilled, (state, action) => {
+      .addCase(welcome.fulfilled, (state, action) => {
         state.loading = false;
         state.error = "";
         state.authData = action.payload;
       })
-      .addCase(Login.rejected, (state, action) => {
+      .addCase(welcome.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
 
-      .addCase(Register.pending, (state) => {
+      .addCase(contact.pending, (state) => {
         state.loading = true;
         state.error = "";
       })
-      .addCase(Register.fulfilled, (state, action) => {
+      .addCase(contact.fulfilled, (state, action) => {
         state.loading = false;
         state.error = "";
         state.authData = action.payload;
       })
-      .addCase(Register.rejected, (state, action) => {
+      .addCase(contact.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
   },
 });
-
-export default loginSlice.reducer;
+export default categoriesSlice.reducer;

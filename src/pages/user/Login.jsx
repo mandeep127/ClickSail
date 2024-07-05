@@ -3,23 +3,28 @@ import { Container, Form, Button } from "react-bootstrap";
 import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 import userLogo from "../../assets/user.png";
-import { loginUser } from "../../store/authAPI/authApiServices";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Login } from "../../store/authAPI/authApiSlice";
 
 const UserLogin = () => {
-  const [username, setLogin] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      const response = await loginUser(username, password);
+      const response = await dispatch(Login({ username, password }));
 
-      if (response && response.code === 200) {
-        localStorage.setItem("token", true);
-        Navigate("/");
+      if (response && response.payload.success.token) {
+        console.log("Token:", response);
+        sessionStorage.setItem("token", response.payload.success.token);
+        navigate("/");
       } else {
         setError(response.message || "Invalid credentials. Please try again.");
       }
@@ -45,6 +50,11 @@ const UserLogin = () => {
           />
           <h2 className="mb-3">Sign In</h2>
           <p className="text-danger">{error}</p>
+          <p>
+            <a className="text-success text-decoration-none" href="/register">
+              Register Now
+            </a>
+          </p>
         </div>
         <Form.Group
           className="mb-3 d-flex align-items-center"
@@ -55,7 +65,7 @@ const UserLogin = () => {
             type="text"
             placeholder="Email or Username"
             value={username}
-            onChange={(e) => setLogin(e.target.value)}
+            onChange={(e) => setUsername(e.target.value)}
             required
           />
           <MdEmail size={25} />
