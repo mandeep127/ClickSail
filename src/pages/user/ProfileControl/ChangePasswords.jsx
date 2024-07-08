@@ -103,7 +103,7 @@ const ChangePassword = () => {
 
             <Link
               to="/dashboard"
-              className="btn btn-primary"
+              className="btn bt-success text-white rounded-pill mt-3 px-5 py-3"
               onClick={handleSubmit}
             >
               Update Password

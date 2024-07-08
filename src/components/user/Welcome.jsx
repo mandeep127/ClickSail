@@ -110,7 +110,7 @@ const WelcomePage = () => {
                 </p>
                 <Button
                   href="/shop/all"
-                  className="border border-white  text-warning rounded-pill bg-success mt-3 px-5 py-3 "
+                  className="border border-white rounded-pill btn-success bt-success mt-3 px-5 py-3 "
                 >
                   <span className="fw-bold">Explore</span>
                 </Button>
@@ -254,7 +254,7 @@ const WelcomePage = () => {
                 </ul>
                 <Button
                   href="/shop/all"
-                  className="text-warning  rounded-pill mt-3 px-5 py-3 bg-success "
+                  className="rounded-pill mt-3 px-5 py-3 bt-success btn-success "
                 >
                   <span className="fw-bold ">Explore</span>
                 </Button>

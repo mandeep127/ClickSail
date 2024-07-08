@@ -58,7 +58,7 @@ function App() {
           }
         />
         <Route
-          path="/shop"
+          path="/shop/:id"
           element={
             <>
               <Layouts>
@@ -68,7 +68,7 @@ function App() {
           }
         />
         <Route
-          path="/ProductDetails"
+          path="/product/details/:id"
           element={
             <>
               <Layouts>
@@ -78,7 +78,7 @@ function App() {
           }
         />
         <Route
-          path="/cart"
+          path="/showcart"
           element={
             <>
               <Layouts>

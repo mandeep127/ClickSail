@@ -108,7 +108,11 @@ const ContactForm = () => {
               />
             </Form.Group>
 
-            <Button variant="primary" type="submit" disabled={loading}>
+            <Button
+              className="rounded-pill btn-success bt-success mt-3 px-5 py-3"
+              type="submit"
+              disabled={loading}
+            >
               {loading ? "Submitting..." : "Submit"}
             </Button>
           </Form>

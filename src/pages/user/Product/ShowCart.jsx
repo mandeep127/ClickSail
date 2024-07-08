@@ -38,6 +38,18 @@ const ShowCart = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     // Handle form submission logic here
+    const formData = new FormData(event.target);
+    const name = formData.get("name");
+    const phone = formData.get("phone");
+    const address = formData.get("address");
+    const pincode = formData.get("pincode");
+
+    if (name && phone && address && pincode) {
+      // Perform further processing like submitting data to server
+      console.log("Form submitted with:", { name, phone, address, pincode });
+    } else {
+      alert("Please fill out all required fields.");
+    }
   };
 
   return (
@@ -112,62 +124,78 @@ const ShowCart = () => {
                       <td style={{ padding: "10px", fontSize: "15px" }}>
                         <Button
                           variant="link"
-                          style={{ color: "red" }}
+                          className="text-danger"
                           onClick={() => handleDeleteConfirmation(carts.id)}
                         >
-                          <RiDeleteBinLine />
+                          <RiDeleteBinLine size={16} />
                         </Button>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-              <Button variant="success" type="submit">
-                Confirm Order
-              </Button>
             </Form>
           </div>
         </Col>
         <Col md={6}>
-          <div style={{ padding: "50px" }}>
-            <Form>
+          <div style={{ padding: "40px" }}>
+            <Form onSubmit={handleSubmit}>
               <Form.Group>
-                <Form.Label>Name:</Form.Label>
+                <Form.Label className="pt-3">Name:</Form.Label>
                 <Form.Control
                   type="text"
                   id="name"
                   name="name"
                   placeholder="Enter your name"
+                  required
                 />
               </Form.Group>
               <Form.Group>
-                <Form.Label>Mobile:</Form.Label>
+                <Form.Label className="pt-3">Mobile:</Form.Label>
                 <Form.Control
-                  type="tel"
+                  type="text"
                   id="phone"
                   name="phone"
                   placeholder="Enter your mobile number"
+                  pattern="[0-9]{10,}"
+                  required
                 />
+                <Form.Text className="text-muted">
+                  Please enter a valid 10-digit mobile number.
+                </Form.Text>
               </Form.Group>
               <Form.Group>
-                <Form.Label>Address:</Form.Label>
+                <Form.Label className="pt-3">Address:</Form.Label>
                 <Form.Control
                   as="textarea"
                   id="address"
                   name="address"
                   rows="4"
                   placeholder="Enter your address"
+                  required
                 />
               </Form.Group>
               <Form.Group>
-                <Form.Label>Pincode:</Form.Label>
+                <Form.Label className="pt-3">Pincode:</Form.Label>
                 <Form.Control
                   type="text"
                   id="pincode"
                   name="pincode"
                   placeholder="Enter your pincode"
+                  pattern="[0-9]{6,}"
+                  title="Please enter a valid 6-digit pincode"
+                  required
                 />
+                <Form.Text className="text-muted">
+                  Please enter a valid 6-digit pincode.
+                </Form.Text>
               </Form.Group>
+              <Button
+                className="rounded-pill mt-3 px-5 py-3 bt-success btn-success"
+                type="submit"
+              >
+                Confirm Order
+              </Button>
             </Form>
           </div>
         </Col>
@@ -183,12 +211,22 @@ const ShowCart = () => {
           <Modal.Header closeButton>
             <Modal.Title>Delete Confirmation</Modal.Title>
           </Modal.Header>
-          <Modal.Body>Are you sure you want to remove this item?</Modal.Body>
+          <Modal.Body className="h6">
+            Are you sure you want to remove this item?
+          </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={handleCloseDeleteModal}>
+            <Button
+              variant="secondary"
+              className="rounded-pill mt-3 px-4 py-2 me-3"
+              onClick={handleCloseDeleteModal}
+            >
               Cancel
             </Button>
-            <Button variant="danger" onClick={() => handleDeleteItem(carts.id)}>
+            <Button
+              variant="danger"
+              className="rounded-pill mt-3 px-4 py-2 me-3"
+              onClick={() => handleDeleteItem(carts.id)}
+            >
               Remove
             </Button>
           </Modal.Footer>

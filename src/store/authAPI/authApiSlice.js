@@ -1,5 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { loginUserApi, registerUserApi } from "./authApiServices";
+import {
+  loginUserApi,
+  logoutUserApi,
+  registerUserApi,
+} from "./authApiServices";
 
 const initialState = {
   loading: false,
@@ -24,6 +28,18 @@ export const Register = createAsyncThunk(
   async (credentials, thunkAPI) => {
     try {
       const response = await registerUserApi(credentials);
+      return response;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const Logout = createAsyncThunk(
+  "user/logout",
+  async (credentials, thunkAPI) => {
+    try {
+      const response = await logoutUserApi(credentials);
       return response;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
@@ -61,6 +77,20 @@ const loginSlice = createSlice({
         state.authData = action.payload;
       })
       .addCase(Register.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      .addCase(Logout.pending, (state) => {
+        state.loading = true;
+        state.error = "";
+      })
+      .addCase(Logout.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = "";
+        state.authData = action.payload;
+      })
+      .addCase(Logout.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

@@ -24,6 +24,7 @@ const UserLogin = () => {
       if (response && response.payload.success.token) {
         console.log("Token:", response);
         sessionStorage.setItem("token", response.payload.success.token);
+        // sessionStorage.setItem("Email", response.payload.data.email);
         navigate("/");
       } else {
         setError(response.message || "Invalid credentials. Please try again.");

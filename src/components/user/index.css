@@ -145,6 +145,13 @@
                  outline: none !important;
                  -webkit-box-shadow: none;
                  box-shadow: none; }
+                 .btn.bt-success{
+                  background: #3b5d50;
+                 border-color: #3b5d50;
+                 }
+                 .btn.bt-success:hover {
+                  background: #314d43;
+                  border-color: #314d43; }
                /* .btn.btn-primary{
                  background: #3b5d50;
                  border-color: #3b5d50; }
