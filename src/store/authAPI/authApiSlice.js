@@ -9,7 +9,7 @@ import {
 const initialState = {
   loading: false,
   error: "",
-  authData: "",
+  authData: null, // Initialize as null for better state representation
 };
 
 export const Login = createAsyncThunk(
@@ -19,7 +19,9 @@ export const Login = createAsyncThunk(
       const response = await loginUserApi(credentials);
       return response;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(
+        error.response ? error.response.data : error.message
+      );
     }
   }
 );
@@ -31,24 +33,24 @@ export const Register = createAsyncThunk(
       const response = await registerUserApi(credentials);
       return response;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(
+        error.response ? error.response.data : error.message
+      );
     }
   }
 );
 
-export const Logout = createAsyncThunk(
-  "user/logout",
-  async (credentials, thunkAPI) => {
-    try {
-      const response = await logoutUserApi(credentials);
-      return response;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
-    }
+export const Logout = createAsyncThunk("user/logout", async (_, thunkAPI) => {
+  try {
+    const response = await logoutUserApi();
+    return response;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(
+      error.response ? error.response.data : error.message
+    );
   }
-);
+});
 
-//forgotPassword
 export const ForgotPassword = createAsyncThunk(
   "user/forgotPassword",
   async (credentials, thunkAPI) => {
@@ -56,7 +58,9 @@ export const ForgotPassword = createAsyncThunk(
       const response = await forgotPasswordApi(credentials);
       return response;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(
+        error.response ? error.response.data : error.message
+      );
     }
   }
 );
@@ -80,7 +84,6 @@ const loginSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-
       .addCase(Register.pending, (state) => {
         state.loading = true;
         state.error = "";
@@ -94,7 +97,6 @@ const loginSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-
       .addCase(Logout.pending, (state) => {
         state.loading = true;
         state.error = "";
@@ -102,13 +104,12 @@ const loginSlice = createSlice({
       .addCase(Logout.fulfilled, (state, action) => {
         state.loading = false;
         state.error = "";
-        state.authData = action.payload;
+        state.authData = null; // Clear authData on logout
       })
       .addCase(Logout.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
-      //forgotPassword
       .addCase(ForgotPassword.pending, (state) => {
         state.loading = true;
         state.error = "";

@@ -2,9 +2,16 @@ import axios from "axios";
 
 const API_URL = "http://127.0.0.1:8000/api";
 
+const axiosInstance = axios.create({
+  baseURL: API_URL,
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem("token")}`,
+  },
+});
+
 export const productApi = async (data) => {
   try {
-    const response = await axios.get(`${API_URL}/shop/${data}`, data);
+    const response = await axiosInstance.get(`${API_URL}/shop/${data}`, data);
     return response;
   } catch (error) {
     console.error("Error in Api:", error);
@@ -15,7 +22,7 @@ export const productApi = async (data) => {
 //product - details
 export const detailsApi = async (data) => {
   try {
-    const response = await axios.get(
+    const response = await axiosInstance.get(
       `${API_URL}/product/details/${data}`,
       data
     );
@@ -28,7 +35,10 @@ export const detailsApi = async (data) => {
 //add product to cart
 export const addCartApi = async (data) => {
   try {
-    const response = await axios.post(`${API_URL}/addcart/${data}`, data);
+    const response = await axiosInstance.post(
+      `${API_URL}/addcart/${data}`,
+      data
+    );
     return response;
   } catch (error) {
     console.error("Error in Api:", error);
@@ -39,7 +49,7 @@ export const addCartApi = async (data) => {
 //show product in cart
 export const showCartApi = async (data) => {
   try {
-    const response = await axios.get(`${API_URL}/showcart`, data);
+    const response = await axiosInstance.get(`${API_URL}/showcart`, data);
     return response;
   } catch (error) {
     console.error("Error in Api:", error);
@@ -49,7 +59,7 @@ export const showCartApi = async (data) => {
 
 export const removeCartApi = async (data) => {
   try {
-    const response = await axios.get(`${API_URL}/delete/${data}`, data);
+    const response = await axiosInstance.get(`${API_URL}/delete/${data}`, data);
     return response;
   } catch (error) {
     console.error("Error in Api:", error);
@@ -60,7 +70,10 @@ export const removeCartApi = async (data) => {
 //payment checkout button
 export const checkoutApi = async (data) => {
   try {
-    const response = await axios.get(`${API_URL}/checkout/${data}`, data);
+    const response = await axiosInstance.get(
+      `${API_URL}/checkout/${data}`,
+      data
+    );
     return response;
   } catch (error) {
     console.error("Error in Api:", error);
@@ -71,7 +84,10 @@ export const checkoutApi = async (data) => {
 // Razorpay payment callback
 export const paymentCallbackApi = async (data) => {
   try {
-    const response = await axios.post(`${API_URL}/razorpay/callback`, data);
+    const response = await axiosInstance.post(
+      `${API_URL}/razorpay/callback`,
+      data
+    );
     return response;
   } catch (error) {
     console.error("Error in Api:", error);
@@ -82,7 +98,7 @@ export const paymentCallbackApi = async (data) => {
 // razorpay  payment status
 export const paymentStatusApi = async (data) => {
   try {
-    const response = await axios.get(
+    const response = await axiosInstance.get(
       `${API_URL}/payment/${data}/${data}`,
       data
     );

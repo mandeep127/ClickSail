@@ -23,7 +23,7 @@ const UserLogin = () => {
 
       if (response && response.payload.success.token) {
         console.log("Token:", response);
-        sessionStorage.setItem("token", response.payload.success.token);
+        localStorage.setItem("token", response.payload.success.token);
         // sessionStorage.setItem("Email", response.payload.data.email);
         navigate("/");
       } else {

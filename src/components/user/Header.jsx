@@ -10,14 +10,15 @@ import {
 import { FaShoppingCart } from "react-icons/fa";
 import { AiOutlineUser } from "react-icons/ai";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { Logout } from "../../store/authAPI/authApiSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { Logout, selectToken } from "../../store/authAPI/authApiSlice";
 
 const Header = () => {
   const userName = "John Doe"; // Replace with actual user name or session data
 
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const dispatch = useDispatch();
+  const token = useSelector(selectToken);
 
   const handleShowModal = () => {
     setShowLogoutModal(true);
@@ -26,24 +27,21 @@ const Header = () => {
   const handleHideModal = () => {
     setShowLogoutModal(false);
   };
-  const data = {}; // Define 'data' if it's used for storing API response or data
-
-  // Example usage:
-  const handleApiResponse = () => {
-    console.log(data); // Using 'data' variable
-  };
 
   const handleLogout = () => {
     dispatch(Logout())
       .unwrap()
       .then((response) => {
-        console.log(response);
+        console.log("Logout successful:", response);
+        // Clear token from localStorage
+        localStorage.removeItem("token");
       })
       .catch((error) => {
         console.error("Logout failed:", error);
+        // Handle logout error
       })
       .finally(() => {
-        setShowLogoutModal(false);
+        setShowLogoutModal(false); // Close modal after logout attempt
       });
   };
 
