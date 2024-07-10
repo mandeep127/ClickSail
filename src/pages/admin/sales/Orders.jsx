@@ -1,200 +1,183 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Col, Container, Row } from 'react-bootstrap';
-import Button from 'react-bootstrap/Button';
-import Table from 'react-bootstrap/Table';
-import Badge from 'react-bootstrap/Badge';
-import { IoListCircleSharp } from 'react-icons/io5';
-import { IoMdArrowRoundBack } from 'react-icons/io';
-import { FaEdit, FaTrash, FaEye } from 'react-icons/fa';
-import Pagination from './../../../components/admin/Pagination'; // Import your Pagination component
-import { IoMdTime, IoMdCheckmarkCircleOutline, IoMdRefresh, IoMdAirplane, IoMdClose } from 'react-icons/io';
-import { FaShippingFast, FaTimes, FaBan, FaCheck, FaSpinner } from 'react-icons/fa';
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
+import { Col, Container, Row } from "react-bootstrap";
+import Button from "react-bootstrap/Button";
+import Table from "react-bootstrap/Table";
+import Badge from "react-bootstrap/Badge";
+import { IoListCircleSharp } from "react-icons/io5";
+import { IoMdArrowRoundBack } from "react-icons/io";
+import { FaEdit, FaTrash, FaEye } from "react-icons/fa";
+
+import {
+  FaShippingFast,
+  FaTimes,
+  FaBan,
+  FaCheck,
+  FaSpinner,
+} from "react-icons/fa";
+
+import { useDispatch, useSelector } from "react-redux";
+
+import {
+  salesList,
+  orderProcessing,
+  orderReject,
+  orderShipping,
+  orderAccept,
+} from "../../../adminStore/salesApi/salesApiSlice";
 
 const Orders = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [ordersPerPage] = useState(5);
-  const [count, setCount] = useState(1); // Initialize count variable for numbering users in the table
+  // const dispatch = useDispatch();
+  const { sales, loading, error } = useSelector((state) => state.sales);
+  console.log(sales);
+  const dispatch = useDispatch();
 
-  // Dummy data for table (replace with actual data)
-  const orders = [
-    {
-      id: 1,
-      name: 'XYZ / XYZ@mail.com',
-      product: 'product1',
-      status: '0',
-      orderDate: '22/june/24',
-    },
-    {
-      id: 2,
-      name: 'XYZ / XYZ@mail.com',
-      product: 'product1',
-      status: '1',
-      orderDate: '22/june/24',
-    },
-    {
-      id: 3,
-      name: 'XYZ / XYZ@mail.com',
-      product: 'product1',
-      status: '2',
-      orderDate: '22/june/24',
-    },
-    {
-      id: 4,
-      name: 'XYZ / XYZ@mail.com',
-      product: 'product1',
-      status: '3',
-      orderDate: '22/june/24',
-    },
-    {
-      id: 5,
-      name: 'XYZ / XYZ@mail.com',
-      product: 'product1',
-      status: '0',
-      orderDate: '22/june/24',
-    },
-    {
-      id: 6,
-      name: 'XYZ / XYZ@mail.com',
-      product: 'product1',
-      status: '1',
-      orderDate: '22/june/24',
-    },
-  ];
+  useEffect(() => {
+    dispatch(salesList());
+  }, [dispatch]);
 
-  // Pagination logic
-  const indexOfLastOrder = currentPage * ordersPerPage;
-  const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
-  const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
-
-  // Calculate starting count for current page
-  const startingCount = indexOfFirstOrder + 1;
-
-  // Change page
-  const paginate = (pageNumber) => {
-    setCurrentPage(pageNumber);
-    setCount((pageNumber - 1) * ordersPerPage + 1);
+  const handleOrderProcessing = async (orderId) => {
+   await dispatch(orderProcessing(orderId));
+    dispatch(salesList());
   };
 
-  // Previous page button
-  const prevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-      setCount(count - ordersPerPage);
-    }
+  const handleOrderReject = async (orderId) => {
+    await dispatch(orderReject(orderId));
+    dispatch(salesList());
   };
 
-  // Next page button
-  const nextPage = () => {
-    if (currentPage < Math.ceil(orders.length / ordersPerPage)) {
-      setCurrentPage(currentPage + 1);
-      setCount(count + ordersPerPage);
-    }
+  const handleOrderShipping = async (orderId) => {
+    await dispatch(orderShipping(orderId));
+    dispatch(salesList());
+  };
+
+  const handleOrderAccept = async (orderId) => {
+    await dispatch(orderAccept(orderId));
+    dispatch(salesList());
   };
 
   // Function to get status icon and text based on status code
-  const getStatusComponents = (status) => {
-    let statusIcon, statusText;
+  const getStatusComponents = (order) => {
+    let badgeVariant;
 
-    switch (status) {
-      case '0':
-        statusIcon = <IoMdTime />;
-        statusText = 'Pending';
+    switch (order.track_status) {
+      case "0":
+        badgeVariant = "dark";
+        return (
+          <Badge bg={badgeVariant} text="white">
+            pending{" "}
+          </Badge>
+        );
         break;
-      case '1':
-        statusIcon = <IoMdCheckmarkCircleOutline />;
-        statusText = 'Completed';
+      case "1":
+        badgeVariant = "success";
+        return (
+          <Badge bg={badgeVariant} text="white">
+            completed{" "}
+            </Badge>
+        );
         break;
-      case '2':
-        statusIcon = <IoMdRefresh />;
-        statusText = 'Processing';
+      case "2":
+        badgeVariant = "info";
+        return (
+          <Badge bg={badgeVariant} text="white">
+            Processing{" "}
+            </Badge>
+        );
         break;
-      case '3':
-        statusIcon = <IoMdAirplane />;
-        statusText = 'Shipped';
+      case "3":
+        badgeVariant = "warning";
+        return (
+          <Badge bg={badgeVariant} text="white">
+            shipped{" "}
+            </Badge>
+        );
         break;
       default:
-        statusIcon = <IoMdClose />;
-        statusText = 'Cancelled';
+        badgeVariant = "danger";
+        return (
+          <Badge bg={badgeVariant} text="white">
+            cancel{" "}
+            </Badge>
+        );
         break;
     }
-
-    return { statusIcon, statusText };
   };
 
   // Function to render status badge based on status code
   const renderStatusBadge = (order) => {
     let badgeVariant, iconComponent;
 
-    switch (order.status) {
-      case '1':
-        badgeVariant = 'success';
+    switch (order.track_status) {
+      case "1":
+        badgeVariant = "success";
         iconComponent = <FaShippingFast />;
-        break;
-      case '4':
-        badgeVariant = 'danger';
-        iconComponent = <FaTimes />;
-        break;
-      case '2':
         return (
-          <div style={{ display: 'flex' }}>
-            <Link
-              to={`changeOrderStatus/shipping/${order.id}`}
+          <Badge bg={badgeVariant} text="white">
+            {iconComponent}
+          </Badge>
+        );
+      case "4":
+        badgeVariant = "danger";
+        iconComponent = <FaTimes />;
+        return (
+          <Badge bg={badgeVariant} text="white">
+            {iconComponent}
+          </Badge>
+        );
+      case "2":
+        return (
+          <div style={{ display: "flex" }}>
+            <Button
+              onClick={() => handleOrderShipping(order.id)}
               className="btn btn-primary btn-warning me-2"
             >
               <FaShippingFast />
-            </Link>
-            <Link
-              to={`changeOrderStatus/Rejected/${order.id}`}
+            </Button>
+            <Button
+              onClick={() => handleOrderReject(order.id)}
               className="btn btn-primary btn-danger me-2"
             >
               <FaBan />
-            </Link>
+            </Button>
           </div>
         );
-      case '3':
+      case "3":
         return (
-          <div style={{ display: 'flex' }}>
-            <Link
-              to={`changeOrderStatus/Accepted/${order.id}`}
-              className="btn btn-primary btn-success me-2 "
+          <div style={{ display: "flex" }}>
+            <Button
+              onClick={() => handleOrderAccept(order.id)}
+              className="btn btn-primary btn-success me-2"
             >
               <FaCheck />
-            </Link>
-            <Link
-              to={`changeOrderStatus/Rejected/${order.id}`}
+            </Button>
+            <Button
+              onClick={() => handleOrderReject(order.id)}
               className="btn btn-primary btn-danger me-2"
             >
               <FaBan />
-            </Link>
+            </Button>
           </div>
         );
       default:
         return (
-          <div style={{ display: 'flex' }}>
-            <Link
-              to={`changeOrderStatus/Processing/${order.id}`}
+          <div style={{ display: "flex" }}>
+            <Button
+              onClick={() => handleOrderProcessing(order.id)}
               className="btn btn-primary btn-info me-2"
             >
               <FaSpinner />
-            </Link>
-            <Link
-              to={`changeOrderStatus/Rejected/${order.id}`}
+            </Button>
+            <Button
+              onClick={() => handleOrderReject(order.id)}
               className="btn btn-primary btn-danger me-2"
             >
               <FaBan />
-            </Link>
+            </Button>
           </div>
         );
     }
-
-    return (
-      <Badge bg={badgeVariant} className="me-2">
-        {iconComponent}
-      </Badge>
-    );
   };
-
   return (
     <>
       <Container fluid className="d-flex flex-column">
@@ -203,13 +186,6 @@ const Orders = () => {
             <h1 className="p-2">
               <IoListCircleSharp /> Order List
             </h1>
-          </Col>
-        </Row>
-        <Row className="justify-content-between align-items-center">
-          <Col className="d-flex justify-content-end">
-            <Button className="bg-danger border-0 d-flex justify-content-center">
-              <IoMdArrowRoundBack className="me-1 sm-1" />
-            </Button>
           </Col>
         </Row>
 
@@ -228,21 +204,31 @@ const Orders = () => {
                 </tr>
               </thead>
               <tbody>
-                {currentOrders.map((order, index) => (
+                {sales?.orders?.map((sale, index) => (
                   <tr
                     key={index}
-                    className={index % 2 === 0 ? 'even-row' : 'odd-row'}
+                    className={index % 2 === 0 ? "even-row" : "odd-row"}
                   >
-                    <td>{count + index}</td>
-                    <td>{order.name}</td>
-                    <td>{order.product}</td>
+                    <td>{index + 1}</td>
                     <td>
-                      {getStatusComponents(order.status).statusIcon}{' '}
-                      {getStatusComponents(order.status).statusText}
+                      {sale.name}/{sale.email}
                     </td>
-                    <td>{order.orderDate}</td>
+                    <td>{sale.product_name}</td>
+                    <td>{getStatusComponents(sale)}</td>
+                    <td>
+                      {sale.created_at
+                        ? new Date(sale.created_at).toLocaleString("en-IN", {
+                            timeZone: "Asia/Kolkata",
+                            hour12: true,
+                            month: "short",
+                            day: "numeric",
+                            hour: "numeric",
+                            minute: "numeric",
+                          })
+                        : "-"}
+                    </td>{" "}
                     <td className="display-flex flex-column align-items-center">
-                      {renderStatusBadge(order)}{' '}
+                      {renderStatusBadge(sale)}{" "}
                     </td>
                     <td>
                       <Link to="#" className="text-black">
@@ -253,18 +239,6 @@ const Orders = () => {
                 ))}
               </tbody>
             </Table>
-          </Col>
-        </Row>
-
-        <Row className="justify-content-center">
-          <Col>
-            <Pagination
-              currentPage={currentPage}
-              totalPages={Math.ceil(orders.length / ordersPerPage)}
-              prevPage={prevPage}
-              nextPage={nextPage}
-              paginate={paginate}
-            />
           </Col>
         </Row>
       </Container>

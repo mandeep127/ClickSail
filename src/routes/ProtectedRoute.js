@@ -3,14 +3,16 @@ import { useSelector } from "react-redux";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
 const ProtectedRoute = ({ children }) => {
-  // const user = useSelector((state) => state.user);
-  let location = useLocation();
+    
+    console.log(children,'children');
   const data = localStorage.getItem("token");
   const navigate = useNavigate();
   const userType = "admin";
   useEffect(() => {
     if (!data && userType != "admin") {
-      return navigate("/");
+      return navigate("/admin/login");
+    }else if(!data && userType != "user"){
+        return navigate("/");
     }
   }, []);
   return children;

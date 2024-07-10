@@ -27,8 +27,6 @@ import Header from "./components/user/Header";
 import Footer from "./components/user/Footer";
 import TokenPage from "./pages/user/Token";
 function App() {
-  const params = useLocation();
-
   return (
     <>
       <Routes>
