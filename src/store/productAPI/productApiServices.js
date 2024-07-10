@@ -35,3 +35,60 @@ export const addCartApi = async (data) => {
     throw error;
   }
 };
+
+//show product in cart
+export const showCartApi = async (data) => {
+  try {
+    const response = await axios.get(`${API_URL}/showcart`, data);
+    return response;
+  } catch (error) {
+    console.error("Error in Api:", error);
+    throw error;
+  }
+};
+
+export const removeCartApi = async (data) => {
+  try {
+    const response = await axios.get(`${API_URL}/delete/${data}`, data);
+    return response;
+  } catch (error) {
+    console.error("Error in Api:", error);
+    throw error;
+  }
+};
+
+//payment checkout button
+export const checkoutApi = async (data) => {
+  try {
+    const response = await axios.get(`${API_URL}/checkout/${data}`, data);
+    return response;
+  } catch (error) {
+    console.error("Error in Api:", error);
+    throw error;
+  }
+};
+
+// Razorpay payment callback
+export const paymentCallbackApi = async (data) => {
+  try {
+    const response = await axios.post(`${API_URL}/razorpay/callback`, data);
+    return response;
+  } catch (error) {
+    console.error("Error in Api:", error);
+    throw error;
+  }
+};
+
+// razorpay  payment status
+export const paymentStatusApi = async (data) => {
+  try {
+    const response = await axios.get(
+      `${API_URL}/payment/${data}/${data}`,
+      data
+    );
+    return response;
+  } catch (error) {
+    console.error("Error in Api:", error);
+    throw error;
+  }
+};

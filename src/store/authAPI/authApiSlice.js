@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
+  forgotPasswordApi,
   loginUserApi,
   logoutUserApi,
   registerUserApi,
@@ -40,6 +41,19 @@ export const Logout = createAsyncThunk(
   async (credentials, thunkAPI) => {
     try {
       const response = await logoutUserApi(credentials);
+      return response;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+
+//forgotPassword
+export const ForgotPassword = createAsyncThunk(
+  "user/forgotPassword",
+  async (credentials, thunkAPI) => {
+    try {
+      const response = await forgotPasswordApi(credentials);
       return response;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
@@ -93,8 +107,24 @@ const loginSlice = createSlice({
       .addCase(Logout.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      //forgotPassword
+      .addCase(ForgotPassword.pending, (state) => {
+        state.loading = true;
+        state.error = "";
+      })
+      .addCase(ForgotPassword.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = "";
+        state.authData = action.payload.authData;
+      })
+      .addCase(ForgotPassword.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
+
+export const selectToken = (state) => state.users.authData;
 
 export default loginSlice.reducer;

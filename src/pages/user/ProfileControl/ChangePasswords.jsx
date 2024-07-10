@@ -1,9 +1,6 @@
-// ChangePasswordForm.js
-
 import React, { useState } from "react";
 import { Form, Container, Row, Col, Alert } from "react-bootstrap";
-import { BsFillExclamationTriangleFill } from "react-icons/bs"; // Example icon from react-icons
-import { Link } from "react-router-dom"; // Import Link from react-router-dom
+import { BsFillExclamationTriangleFill } from "react-icons/bs";
 
 const ChangePassword = () => {
   const [formData, setFormData] = useState({
@@ -25,31 +22,19 @@ const ChangePassword = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setErrors([]);
 
-    // Validate form data (basic example)
-    const newErrors = [];
-    if (
-      !formData.current_password ||
-      !formData.new_password ||
-      !formData.new_password_confirmation
-    ) {
-      newErrors.push("All fields are required");
-    }
     if (formData.new_password !== formData.new_password_confirmation) {
-      newErrors.push("New password and confirm password do not match");
+      setErrors(["New password and confirm password do not match"]);
+      return;
     }
-    setErrors(newErrors);
 
-    // Simulate API call or further processing here
-    if (newErrors.length === 0) {
-      // Simulate success for demo purposes
-      setSuccessMessage("Password updated successfully");
-      setFormData({
-        current_password: "",
-        new_password: "",
-        new_password_confirmation: "",
-      });
-    }
+    setSuccessMessage("Password updated successfully");
+    setFormData({
+      current_password: "",
+      new_password: "",
+      new_password_confirmation: "",
+    });
   };
 
   return (
@@ -101,13 +86,12 @@ const ChangePassword = () => {
               />
             </Form.Group>
 
-            <Link
-              to="/dashboard"
-              className="btn bt-success text-white rounded-pill mt-3 px-5 py-3"
-              onClick={handleSubmit}
+            <button
+              type="submit"
+              className="btn btn-success text-white rounded-pill mt-3 px-5 py-3"
             >
               Update Password
-            </Link>
+            </button>
           </Form>
         </Col>
       </Row>

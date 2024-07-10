@@ -25,6 +25,7 @@ import UpdateProfile from "./pages/user/ProfileControl/UpdateProfile";
 import ContactForm from "./pages/user/Contact";
 import Header from "./components/user/Header";
 import Footer from "./components/user/Footer";
+import TokenPage from "./pages/user/Token";
 function App() {
   const params = useLocation();
 
@@ -108,7 +109,7 @@ function App() {
           }
         />
         <Route
-          path="/checkout"
+          path="/checkout/:id"
           element={
             <>
               <Layouts>
@@ -118,7 +119,7 @@ function App() {
           }
         />
         <Route
-          path="/payment-status"
+          path="/payment/:id"
           element={
             <>
               <Layouts>
@@ -163,6 +164,16 @@ function App() {
             <>
               <Layouts>
                 <ContactForm />
+              </Layouts>
+            </>
+          }
+        />
+        <Route
+          path="/token"
+          element={
+            <>
+              <Layouts>
+                <TokenPage />
               </Layouts>
             </>
           }

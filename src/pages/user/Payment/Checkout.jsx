@@ -1,16 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
 import { FaSpinner } from "react-icons/fa";
-import { Link } from "react-router-dom"; // Import Link from react-router-dom
-
-// Mocked data (replace with actual data)
-const orderId = "12345";
-const totalPrice = 1000; // Assuming totalPrice is in INR (adjust as per your requirement)
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  RazorpayCallback,
+  PaymentStatus,
+  CheckoutPage,
+} from "../../../store/productAPI/productApiSlice";
 
 const Checkout = () => {
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+  const { orderId, totalPrice } = useSelector((state) => state.products); // Adjust selector as per your Redux state structure
 
-  // Function to dynamically load Razorpay script
+  useEffect(() => {
+    dispatch(CheckoutPage());
+  }, [dispatch]);
+
   const loadRazorpayScript = () => {
     setLoading(true);
 
@@ -19,18 +26,28 @@ const Checkout = () => {
     script.async = true;
     script.onload = () => {
       const options = {
-        key: process.env.REACT_APP_RZP_API_KEY, // Replace with your actual API key
-        amount: totalPrice * 100, // Amount in paisa (100 paise = 1 INR)
+        key: "rzp_test_BzAVeQXt6ZEUSn",
+        amount: totalPrice * 100,
         currency: "INR",
         order_id: orderId,
-        buttontext: "Pay with Razorpay",
-        name: "A-MDarji",
         description: "Test transaction",
-        theme: {
-          color: "#198754",
+        handler: function (response) {
+          console.log("Payment successful!", response);
+          dispatch(RazorpayCallback(response));
+          alert("Payment successful! Thank you for your purchase.");
+          dispatch(
+            PaymentStatus({ orderId, razorpayId: response.razorpay_payment_id })
+          );
         },
       };
+
       const rzp = new window.Razorpay(options);
+
+      rzp.on("payment.failed", function (response) {
+        console.log("Payment failed!", response.error.description);
+        alert("Payment failed. Please try again.");
+      });
+
       rzp.open();
       setLoading(false);
     };
@@ -53,12 +70,15 @@ const Checkout = () => {
         </p>
 
         {/* Spinner */}
+        {loading && (
+          <FaSpinner
+            size={30}
+            className="text-success mt-3 pb-3"
+            role="status"
+          />
+        )}
 
-        <div className="spinner-border text-success mt-3" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
         <div>
-          {" "}
           <Link
             to="#"
             className="btn btn-success mt-5"
