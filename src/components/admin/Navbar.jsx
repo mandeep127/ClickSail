@@ -12,25 +12,21 @@ import { useDispatch } from "react-redux";
 import { AuthLogout } from "../../adminStore/authApi/authApiSlice";
 import "./Admin.css";
 
-
 const AdminHeader = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    dispatch(AuthLogout())
-      .unwrap()
-      .then((response) => {
-        localStorage.clear();
-        navigate("/admin/login");
-      })
-      .catch((error) => {
-        console.error("Logout failed:", error);
-      });
+  const handleLogout = async () => {
+    await dispatch(AuthLogout());
+      localStorage.clear();
+       navigate("/admin/login");
   };
 
   return (
-    <Navbar expand="lg" className="main-header navbar navbar-expand border-bottom">
+    <Navbar
+      expand="lg"
+      className="main-header navbar navbar-expand border-bottom"
+    >
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto ms-3">
@@ -49,7 +45,9 @@ const AdminHeader = () => {
       <Navbar.Collapse className="justify-content-end me-4">
         <Nav>
           <NavDropdown
-            title={<FaUserCircle style={{ fontSize: "30px", color: "#702632" }} />}
+            title={
+              <FaUserCircle style={{ fontSize: "30px", color: "#702632" }} />
+            }
             className="custom-dropdown" // Apply custom class for styling
             id="basic-nav-dropdown"
             alignRight
