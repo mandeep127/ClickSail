@@ -1,5 +1,5 @@
 import React from "react";
-import { Navbar, Nav, NavDropdown, Button } from "react-bootstrap";
+import { Navbar, Nav, NavDropdown } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import {
   FaBars,
@@ -7,54 +7,61 @@ import {
   FaComment,
   FaUserCircle,
   FaExpandArrowsAlt,
-} from "react-icons/fa"; // Importing icons from react-icons/fa
+} from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { AuthLogout } from "../../adminStore/authApi/authApiSlice";
+import "./Admin.css";
+
 
 const AdminHeader = () => {
-  const navigate=useNavigate()
-  return (
-    <Navbar expand="lg" className="main-header navbar navbar-expand border-bottom ">
-      {/* Left navbar links */}
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
+  const handleLogout = () => {
+    dispatch(AuthLogout())
+      .unwrap()
+      .then((response) => {
+        localStorage.clear();
+        navigate("/admin/login");
+      })
+      .catch((error) => {
+        console.error("Logout failed:", error);
+      });
+  };
+
+  return (
+    <Navbar expand="lg" className="main-header navbar navbar-expand border-bottom">
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
-        <Nav className="mr-auto">
-          <Nav.Link as={Link} to="/admin/user/queries">
-            <FaBars />
-          </Nav.Link>
+        <Nav className="mr-auto ms-3">
           <Nav.Link as={Link} to="/admin/dashboard">
-              <FaHome /> <strong>Home</strong> 
+            <FaHome size={30} /> <strong className="mt-1">Home</strong>
           </Nav.Link>
           <Nav.Link as={Link} to="/admin/user/queries">
-              user{" "}
-              <sup>
-                <FaComment />
-              </sup>
+            user{" "}
+            <sup>
+              <FaComment />
+            </sup>
           </Nav.Link>
         </Nav>
       </Navbar.Collapse>
 
-      {/* Right navbar links */}
-      <Navbar.Collapse className="justify-content-end me-4 ">
+      <Navbar.Collapse className="justify-content-end me-4">
         <Nav>
-        
-          
           <NavDropdown
-            title={
-              <FaUserCircle style={{ fontSize: "30px", color: "#702632" }} />
-            }
-           className="me-3" id="basic-nav-dropdown"
+            title={<FaUserCircle style={{ fontSize: "30px", color: "#702632" }} />}
+            className="custom-dropdown" // Apply custom class for styling
+            id="basic-nav-dropdown"
+            alignRight
           >
-                <NavDropdown.Item href="#">Profile</NavDropdown.Item>
-                <NavDropdown.Item href="#">Orders</NavDropdown.Item>
-                <NavDropdown.Item href="#">Change Password</NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item onClick={()=>{localStorage.clear()
-                  navigate('/admin/login')
-                }}> Logout</NavDropdown.Item>
-              </NavDropdown>
-          <Nav.Link href="#">
-            <FaExpandArrowsAlt />
-          </Nav.Link>
+            <div className="dropdown-menu-right">
+              <NavDropdown.Item href="#">Profile</NavDropdown.Item>
+              <NavDropdown.Item href="#">Orders</NavDropdown.Item>
+              <NavDropdown.Item href="#">Change Password</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
+            </div>
+          </NavDropdown>
         </Nav>
       </Navbar.Collapse>
     </Navbar>

@@ -17,6 +17,7 @@ import EditSubCat from "../../src/pages/admin/subcategories/Edit";
 import AddProduct from "../../src/pages/admin/products/Add";
 import EditProduct from "../../src/pages/admin/products/Edit";
 import AdminProfile from "../../src/pages/admin/profile/AdminProfile";
+import AdminChangePass from "../../src/pages/admin/profile/AdminChangePass";
 
 const Routing = () => {
   return (
@@ -33,14 +34,17 @@ const Routing = () => {
         <Route path="/admin/product/list" element={<ProductList />} />
         <Route path="/admin/sales/list" element={<Orders />} />
         <Route path="/admin/transactions/list" element={<Transactions />} />
-        <Route path="/admin/user/edit" element={<EditUser />} />
+        <Route path="/admin/user/edit/:id"  element={<EditUser />} />
         <Route path="/admin/category/add" element={<AddCat />} />
-        <Route path="/admin/category/edit" element={<EditCat />} />
+        <Route path="/admin/category/edit/:id" element={<EditCat />} />
         <Route path="/admin/subcategory/add" element={<AddSubCat />} />
-        <Route path="/admin/subcategory/edit" element={<EditSubCat />} />
+        <Route path="/admin/subcategory/edit/:id" element={<EditSubCat />} />
         <Route path="/admin/product/add" element={<AddProduct />} />
-        <Route path="/admin/product/edit" element={<EditProduct />} />
+        <Route path="/admin/product/edit/:id" element={<EditProduct />} />
         <Route path="/admin/profile" element={<AdminProfile />} />
+        <Route path="/admin/profile" element={<AdminProfile />} />
+        <Route path="/admin/profile/change_password" element={<AdminChangePass />} />
+
       </Routes>
     </>
   );

@@ -1,88 +1,57 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Col, Container, Row } from "react-bootstrap";
 import Dropdown from "react-bootstrap/Dropdown";
 import Button from "react-bootstrap/Button";
 import { FaUserPlus, FaEdit, FaTrash, FaUnlock, FaLock } from "react-icons/fa";
 import Table from "react-bootstrap/Table";
-import { MdSkipPrevious, MdSkipNext } from "react-icons/md";
-import categoryImage1 from "../../../assets/AdminLTELogo.png";
-import categoryImage2 from "../../../assets/AdminLTELogo.png";
 import { MdCategory } from "react-icons/md";
-import Pagination from './../../../components/admin/Pagination'; 
+import { useDispatch, useSelector } from "react-redux";
+import { subcategoriesList, subcategoriesStatus, subCategoryDelete } from "../../../adminStore/subCategoriesApi/subcategoriesApiSlice";
+import {useNavigate} from 'react-router-dom';
+import ConfirmationDialog from '../../../components/admin/confirmation'; 
 
 const SubCategoriesList = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [subcategoriesPerPage] = useState(5);
-  const [count, setCount] = useState(1); 
 
-  // Dummy data for table (replace with actual data)
-  const subcategories = [
-    {
-      name: "Shirt",
-      image: categoryImage1 ,
-      status: "0",
-    },
-    {
-      name: "T-Shirt",
-      image: categoryImage2 ,
-      status: "1",
-    },
-    {
-      name: "Shirt",
-      image: categoryImage1 ,
-      status: "0",
-    },
-    {
-      name: "T-Shirt",
-      image: categoryImage2 ,
-      status: "1",
-    },
-    {
-      name: "Shirt",
-      image: categoryImage1 ,
-      status: "0",
-    },
-    {
-      name: "T-Shirt",
-      image: categoryImage2 ,
-      status: "1",
-    },
-  ];
+  const navigate = useNavigate()
+   const { subcategories, loading, error } = useSelector((state) => state.subcategory);
+   const dispatch = useDispatch();
+   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+   const [subcategoryIdToDelete, setSubCategoryIdToDelete] = useState(null);
 
-  // Pagination logic
-  const indexOfLastSubCategory = currentPage * subcategoriesPerPage;
-  const indexOfFirstSubCategory = indexOfLastSubCategory - subcategoriesPerPage;
-  const currentCategories = subcategories.slice(
-    indexOfFirstSubCategory,
-    indexOfLastSubCategory
-  );
+   useEffect(() => {
+     dispatch(subcategoriesList());
+   }, [dispatch]);
 
-  // Calculate starting count for current page
-  const startingCount = indexOfFirstSubCategory + 1;
+   const handleStatusSubCategory = async(SubcategoryId) => {
+   await dispatch(subcategoriesStatus(SubcategoryId));
+   dispatch(subcategoriesList());
 
-  // Change page
-  const paginate = (pageNumber) => {
-    setCurrentPage(pageNumber);
-    setCount((pageNumber - 1) * subcategoriesPerPage + 1);
+  };
+//handle delete
+  const handleDeleteSubCategory = async (subcategoryId) => {
+    await dispatch(subCategoryDelete(subcategoryId));
+    dispatch(subcategoriesList());
+
   };
 
-  // Previous page button
-  const prevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-      setCount(count - subcategoriesPerPage);
+  const openDeleteDialog = (subcategoryId) => {
+    setSubCategoryIdToDelete(subcategoryId);
+    setShowDeleteDialog(true);
+  };
+
+  const closeDeleteDialog = () => {
+    setShowDeleteDialog(false);
+  };
+
+  const confirmDeleteSubCategory = () => {
+    if (subcategoryIdToDelete) {
+      handleDeleteSubCategory(subcategoryIdToDelete);
+      setShowDeleteDialog(false);
     }
   };
 
-  // Next page button
-  const nextPage = () => {
-    if (currentPage < Math.ceil(subcategories.length / subcategoriesPerPage)) {
-      setCurrentPage(currentPage + 1);
-      setCount(count + subcategoriesPerPage);
-    }
-  };
-
+ 
   return (
     <>
       <Container fluid className="d-flex flex-column">
@@ -94,7 +63,7 @@ const SubCategoriesList = () => {
           </Col>
         </Row>
         <Row className="justify-content-between align-items-center">
-        <Col>
+          {/* <Col>
             <h6>Select Category:</h6>
             <Dropdown className="d-inline mx-2" autoClose="outside">
               <Dropdown.Toggle id="dropdown-autoclose-outside">
@@ -104,9 +73,9 @@ const SubCategoriesList = () => {
                 <Dropdown.Item href="#">Menu Item</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
-          </Col>
+          </Col> */}
           <Col className="d-flex justify-content-end">
-            <Button className="bg-success border-0 d-flex justify-content-center">
+            <Button onClick ={ () => {navigate('/admin/subcategory/add')}} className="bg-success border-0 d-flex justify-content-center">
               <FaUserPlus className="mr-1 mt-1" /> Add Subcategory
             </Button>
           </Col>
@@ -125,17 +94,17 @@ const SubCategoriesList = () => {
                 </tr>
               </thead>
               <tbody>
-                {currentCategories.map((category, index) => (
+                {subcategories?.sub_categories?.map((subcategory, index) => (
                   <tr
                     key={index}
                     className={index % 2 === 0 ? "even-row" : "odd-row"}
                   >
-                    <td>{count + index}</td>
-                    <td>{category.name}</td>
+                    <td>{index + 1}</td>
+                    <td>{subcategory.name}</td>
                     <td>
                       {" "}
                       <img
-                        src={category.image}
+                        src={`http://a-mdarji.com/${subcategory.image}`}
                         className=""
                         width="100"
                         height="100"
@@ -145,29 +114,36 @@ const SubCategoriesList = () => {
 
                     <td>
                       <Button
-                        href="#"
+                        onClick={() => handleStatusSubCategory(subcategory.id)}
                         className={`btn ${
-                          category.status === "1"
+                          subcategory.status === "1"
                             ? "btn-primary btn-success btn-block"
                             : "btn-primary btn-danger btn-block"
                         }`}
                       >
                         <b>
-                          {category.status === "1" ? <FaUnlock /> : <FaLock />}
+                          {subcategory.status === "1" ? (
+                            <FaUnlock />
+                          ) : (
+                            <FaLock />
+                          )}
                         </b>
                       </Button>
                     </td>
                     <td className="display-flex flex-column align-items-center">
-                      <Link to="#" className="btn me-2 btn-info">
+                      <Link to={`/admin/subcategory/edit/${subcategory.id}`} className="btn me-2 btn-info">
                         <b>
                           <FaEdit />
                         </b>
                       </Link>
-                      <Link to="#" className="btn btn-danger">
+                      <Button
+                        onClick={() => openDeleteDialog(subcategory.id)}
+                        className="btn btn-danger"
+                      >
                         <b>
                           <FaTrash />
                         </b>
-                      </Link>
+                      </Button>
                     </td>
                   </tr>
                 ))}
@@ -175,20 +151,15 @@ const SubCategoriesList = () => {
             </Table>
           </Col>
         </Row>
-
-        <Row className="justify-content-center">
-        <Col>
-            <Pagination
-              currentPage={currentPage}
-              totalPages={Math.ceil(subcategories.length / subcategoriesPerPage)}
-              prevPage={prevPage}
-              nextPage={nextPage}
-              paginate={paginate}
-            />
-          </Col>
-        </Row>
       </Container>
+      <ConfirmationDialog
+        show={showDeleteDialog}
+        onClose={closeDeleteDialog}
+        onConfirm={confirmDeleteSubCategory}
+        message="Are you sure you want to delete this sub-category?"
+      />
     </>
+
   );
 };
 

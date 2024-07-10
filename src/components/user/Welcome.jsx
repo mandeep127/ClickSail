@@ -6,7 +6,7 @@ import {
   AiOutlineCustomerService,
   AiOutlineRetweet,
 } from "react-icons/ai";
-import "../../index.css";
+import "./index.css";
 import { Link } from "react-router-dom";
 import HeroImg from "../../assets/hero.png";
 import Img from "../../assets/T-Shirt-25.jpg";

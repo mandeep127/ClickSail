@@ -1,47 +1,69 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Card, Form, Button } from 'react-bootstrap';
 import { MdCategory } from 'react-icons/md';
 import { BiSolidCategoryAlt } from 'react-icons/bi';
 import { Col, Row } from 'react-bootstrap';
 import { GrSelect } from "react-icons/gr";
-import categoryImage1 from "../../../assets/AdminLTELogo.png";
-import categoryImage2 from "../../../assets/AdminLTELogo.png";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import {
+  categoriesList,
+  categoryEditGet,
+  categoryEditPost,
+} from "../../../adminStore/categoriesApi/categoriesApiSlices";
+import { Link, useNavigate } from 'react-router-dom';
 
 const EditCat = () => {
+  const dispatch = useDispatch();
+  const { category } = useSelector((state) => state.category);
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+
+  useEffect(() => {
+    dispatch(categoryEditGet(id));
+  }, [dispatch, id]);
+
   const [formData, setFormData] = useState({
     name: '',
-    categoryImage: null, // To store the selected image file
+    image: null,
   });
-  const categories = [
-    {
-      name: "Men",
-      image: categoryImage1 ,
-    },
-    {
-      name: "Woman",
-      image: categoryImage2 ,
-    },
-  ];
+
+
+  useEffect(() =>{
+    setFormData({
+      name: category?.category?.name,
+      image : category?.category?.image
+    });
+  },[category])
+
   const handleInputChange = (event) => {
-    if (event.target.name === 'categoryImage') {
-      // Handle image file input separately
-      setFormData({ ...formData, categoryImage: event.target.files[0] });
+    if (event.target.name === "image") {
+
+      setFormData({ ...formData, image: event.target.files?.[0] });
     } else {
       const { name, value } = event.target;
       setFormData({ ...formData, [name]: value });
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async(event) => {
     event.preventDefault();
-    // Handle form submission logic (e.g., validation, API call)
-    console.log('Form submitted:', formData);
-    // Reset form fields after submission (optional)
+    const data = new FormData()
+    data.append("name", formData.name)
+    data.append("image",formData.image )
+
+    await dispatch(categoryEditPost({ id, data: data }));
+
     setFormData({
       name: '',
-      categoryImage: null,
+      image: null,
     });
+    navigate("/admin/categories/list");
+    dispatch(categoriesList());
   };
+
+  console.log('formData', formData)
 
   return (
     <Container className="p-3">
@@ -84,7 +106,7 @@ const EditCat = () => {
                     <Form.Control
                     type="file"
                     accept="image/*"
-                    name="categoryImage"
+                    name="image"
                     onChange={handleInputChange}
                     className="form-control"
                     required

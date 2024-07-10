@@ -1,37 +1,53 @@
-import React, { useState } from 'react';
-import { Container, Card, Form, Button } from 'react-bootstrap';
-import { MdCategory } from 'react-icons/md';
-import { BiSolidCategoryAlt } from 'react-icons/bi';
-import { Col, Row } from 'react-bootstrap';
+import React, { useState } from "react";
+import { Container, Card, Form, Button } from "react-bootstrap";
+import { MdCategory } from "react-icons/md";
+import { BiSolidCategoryAlt } from "react-icons/bi";
+import { Col, Row } from "react-bootstrap";
 import { GrSelect } from "react-icons/gr";
+import { useDispatch , useSelector} from "react-redux";
+import { categoriesList, addCategory } from "../../../adminStore/categoriesApi/categoriesApiSlices";
+import { Link, useNavigate } from 'react-router-dom';
 
 const AddCat = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
-    name: '',
-    categoryImage: null, // To store the selected image file
+    name: "",
+    image: "",
   });
 
   const handleInputChange = (event) => {
-    if (event.target.name === 'categoryImage') {
-      // Handle image file input separately
-      setFormData({ ...formData, categoryImage: event.target.files[0] });
+    if (event.target.name === "image") {
+      console.log(event.target.files?.[0])
+      setFormData({ ...formData, image: event.target.files?.[0] });
     } else {
       const { name, value } = event.target;
       setFormData({ ...formData, [name]: value });
     }
   };
 
+  console.log('formData.image ', formData.image )
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Handle form submission logic (e.g., validation, API call)
-    console.log('Form submitted:', formData);
-    // Reset form fields after submission (optional)
+    const data = new FormData()
+    data.append("name", formData.name)
+    data.append("image",formData.image )
+  
+    dispatch(addCategory(data));
+
     setFormData({
-      name: '',
-      categoryImage: null,
+      name: "",
+      image: null,
     });
+
+    navigate("/admin/categories/list");
+
   };
 
+
+  
   return (
     <Container className="p-3">
       <Row>
@@ -48,7 +64,11 @@ const AddCat = () => {
               <Form onSubmit={handleSubmit}>
                 <div className="d-flex align-items-center mb-3">
                   <MdCategory size={50} className="me-2" />
-                  <Form.Group className="mb-3" controlId="formName" style={{ flex: 1 }}>
+                  <Form.Group
+                    className="mb-3"
+                    controlId="formName"
+                    style={{ flex: 1 }}
+                  >
                     <Form.Label>
                       <b>Name</b>
                     </Form.Label>
@@ -66,24 +86,30 @@ const AddCat = () => {
 
                 <div className="d-flex align-items-center mb-3">
                   <GrSelect size={50} className="me-2" />
-                  <Form.Group className="mb-3" controlId="formCategoryImage" style={{ flex: 1 }}>
+                  <Form.Group
+                    className="mb-3"
+                    controlId="formCategoryImage"
+                    style={{ flex: 1 }}
+                  >
                     <Form.Label>
                       <b>Select Category Image</b>
                     </Form.Label>
                     <Form.Control
-                    type="file"
-                    accept="image/*"
-                    name="categoryImage"
-                    onChange={handleInputChange}
-                    className="form-control"
-                    required
-                  />
+                      type="file"
+                      accept="image/*"
+                      name="image"
+                      onChange={handleInputChange}
+                      className="form-control"
+                      required
+                    />
                   </Form.Group>
                 </div>
 
-               
-
-                <Button variant="primary" type="submit" className="rounded-pill w-100">
+                <Button
+                  variant="primary"
+                  type="submit"
+                  className="rounded-pill w-100"
+                >
                   Submit
                 </Button>
               </Form>

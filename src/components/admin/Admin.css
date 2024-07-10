@@ -1,7 +1,8 @@
 
 
 .sidebar{
-   width: 22%;
+   width: 20rem;
+   width : fit-content;
 }
 .custom-dropdown-toggle {
   background-color:#ebebcf!important;
@@ -19,11 +20,11 @@
 }
 
 .main-header{
-  background-color: #ebebcf;
+  background-color: #f1f1e2;
 }
 
 .main-footer{
-  background-color: #ebebcf;
+  background-color: #f1f1e2;
   height:8%;
 }
 
@@ -37,7 +38,7 @@
 }
 
 .admin-profile{
-  height: 21rem;
+  height: 23rem;
   width: 15rem;
   background-color:#EFEFDF!important;
 
@@ -52,8 +53,39 @@
 
 
 
+.layout {
+  height: 100vh;
+}
+
+.sidebar {
+  width: 20rem; 
+  flex: 0 0 18rem; 
+  /* background-color: #f0f0f0; */
+  overflow-y: auto; 
+}
+
+.main-content {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 5px; 
+}
+
+.content-wrapper {
+  flex-grow: 1; 
+  overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    display: none; 
+  }
+}
 
 
+.custom-dropdown .dropdown-menu-right {
+  right: 20px !important; 
+  left: auto !important;
+}
 
 
 

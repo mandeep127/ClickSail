@@ -1,7 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Card, Form, Button } from 'react-bootstrap';
-import { MdCategory } from 'react-icons/md';
-import { BiSolidCategoryAlt } from 'react-icons/bi';
 import { Col, Row } from 'react-bootstrap';
 import { GrSelect } from 'react-icons/gr';
 import { GoMultiSelect } from 'react-icons/go';
@@ -11,22 +9,46 @@ import { GoSingleSelect } from "react-icons/go";
 import { AiOutlineStock } from "react-icons/ai";
 import { SiNamecheap } from 'react-icons/si';
 import { FaProductHunt } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { addProduct, productList } from "../../../adminStore/productApi/productApiSlice";
+import { categoriesList } from "../../../adminStore/categoriesApi/categoriesApiSlices";
+import { subcategoriesList } from "../../../adminStore/subCategoriesApi/subcategoriesApiSlice";
+import { Link, useNavigate } from 'react-router-dom';
 
 const AddProduct = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { categories } = useSelector((state) => state.category);
+  const { subcategories } = useSelector((state) => state.subcategory);
+
+  useEffect(() => {
+    dispatch(categoriesList());
+  }, []);
+
+  useEffect(() => {
+    dispatch(subcategoriesList());
+  }, []);
+
+console.log(subcategories)
   const [formData, setFormData] = useState({
     name: '',
     description: '',
     price: '',
-    category: '',
-    subcategory: '',
-    categoryImage: null,
-    subcategoryImages: [], // To store multiple selected subcategory images
+    stock : '',
+    category_id: '',
+    sub_category_id: '',
+    image: '',
+    sub_images: [],
   });
 
   const handleInputChange = (event) => {
-    if (event.target.name === 'categoryImage' || event.target.name === 'subcategoryImages') {
-      // Handle image file input separately
-      setFormData({ ...formData, [event.target.name]: event.target.files });
+    if (event.target.name === 'image' || event.target.name === 'sub_images') {
+      if (event.target.name === 'image') {
+        setFormData({ ...formData, image: event.target.files[0] });
+      }
+      else if (event.target.name === 'sub_images') {
+        setFormData({ ...formData, sub_images: event.target.files });
+      }
     } else {
       const { name, value } = event.target;
       setFormData({ ...formData, [name]: value });
@@ -35,18 +57,38 @@ const AddProduct = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Handle form submission logic (e.g., validation, API call)
+    const data = new FormData()
+    data.append("name", formData.name)
+    data.append("description", formData.description)
+    if (formData.image) {
+      data.append("image", formData.image);
+    }
+    data.append("category_id",formData.category_id )
+    data.append("sub_category_id",formData.sub_category_id )
+    data.append("price",formData.price )
+    data.append("stock",formData.stock )
+
+    if (formData.sub_images.length > 0) {
+      for (let i = 0; i < formData.sub_images.length; i++) {
+        data.append('sub_images[]', formData.sub_images[i]);
+      }}
+
     console.log('Form submitted:', formData);
-    // Reset form fields after submission (optional)
+    dispatch(addProduct(data));
+
     setFormData({
       name: '',
       description: '',
       price: '',
+      stock:'',
       category: '',
-      subcategory: '',
-      categoryImage: null,
-      subcategoryImages: [],
+      sub_category: '',
+      image: null,
+      sub_images: [],
     });
+    dispatch(productList());
+
+    navigate("/admin/product/list");
   };
 
   return (
@@ -124,15 +166,18 @@ const AddProduct = () => {
                       <b>Select Category</b>
                     </Form.Label>
                     <Form.Select
-                      name="category"
-                      value={formData.category}
+                      name="category_id"
+                      value={formData.category_id}
                       onChange={handleInputChange}
                       className="rounded-pill"
                       aria-label="Select Category"
                     >
-                      <option value="xyz">xyz</option>
-                      <option value="nnp">nnp</option>
-                      <option value="rst">rst</option>
+                     <option value="">Select Category</option>
+                      {categories?.categories?.map((category, index) => (
+                        <option key={category.id} value={category.id}>
+                          {category.name}
+                        </option>
+                      ))}
                     </Form.Select>
                   </Form.Group>
                 </div>
@@ -144,15 +189,18 @@ const AddProduct = () => {
                       <b>Select Subcategory</b>
                     </Form.Label>
                     <Form.Select
-                      name="subcategory"
-                      value={formData.subcategory}
+                      name="sub_category_id"
+                      value={formData.sub_category_id}
                       onChange={handleInputChange}
                       className="rounded-pill"
                       aria-label="Select Subcategory"
                     >
-                      <option value="xyz">xyz</option>
-                      <option value="nnp">nnp</option>
-                      <option value="rst">rst</option>
+                   <option value="">Select SubCategory</option>
+                      {subcategories?.sub_categories?.map((subcategory, index) => (
+                        <option key={subcategory.id} value={subcategory.id}>
+                          {subcategory.name}
+                        </option>
+                      ))}
                     </Form.Select>
                   </Form.Group>
                 </div>
@@ -184,7 +232,7 @@ const AddProduct = () => {
                     <Form.Control
                       type="file"
                       accept="image/*"
-                      name="categoryImage"
+                      name="image"
                       onChange={handleInputChange}
                       className="form-control"
                       required
@@ -202,7 +250,7 @@ const AddProduct = () => {
                     <Form.Control
                       type="file"
                       accept="image/*"
-                      name="subcategoryImages"
+                      name="sub_images"
                       onChange={handleInputChange}
                       className="form-control"
                       required
