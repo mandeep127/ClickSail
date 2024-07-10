@@ -36,10 +36,10 @@ const Footer = () => {
               modern designs that reflect your unique taste."
             </p>
             <ul className="list-unstyled d-flex pt-2">
-              <li className="me-3">
+              <li className="me-3 ">
                 <a
                   href="#"
-                  className="text-decoration-none d-inline-block rounded-circle p-2 btn btn-primary"
+                  className="text-decoration-none d-inline-block rounded-circle p-2 btn btn-success"
                 >
                   <FaFacebookF size={20} color="white" />
                 </a>
@@ -47,7 +47,7 @@ const Footer = () => {
               <li className="me-3">
                 <a
                   href="#"
-                  className="text-decoration-none d-inline-block rounded-circle p-2 btn btn-primary"
+                  className="text-decoration-none d-inline-block rounded-circle p-2 btn btn-success"
                 >
                   <FaTwitter size={20} color="white" />
                 </a>
@@ -55,7 +55,7 @@ const Footer = () => {
               <li className="me-3">
                 <a
                   href="#"
-                  className="text-decoration-none d-inline-block rounded-circle p-2 btn btn-primary"
+                  className="text-decoration-none d-inline-block rounded-circle p-2 btn btn-success"
                 >
                   <FaInstagram size={20} color="white" />
                 </a>
@@ -63,7 +63,7 @@ const Footer = () => {
               <li>
                 <a
                   href="#"
-                  className="text-decoration-none d-inline-block rounded-circle p-2 btn btn-primary"
+                  className="text-decoration-none d-inline-block rounded-circle p-2 btn  btn-success"
                 >
                   <FaLinkedin size={20} color="white" />
                 </a>

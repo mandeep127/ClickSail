@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import {
   Container,
   Row,
@@ -8,69 +9,54 @@ import {
   Carousel,
   Image,
 } from "react-bootstrap";
-import Img from "../../../assets/T-Shirt-25.jpg";
-import Img1 from "../../../assets/T-Shirt-26.jpg";
-import Img2 from "../../../assets/T-Shirt-24.jpg";
-import Img3 from "../../../assets/T-Shirt.jpg";
 import { BsFillCartCheckFill, BsFillGiftFill } from "react-icons/bs";
 import { IoIosStar, IoIosStarHalf } from "react-icons/io";
 import { MdNavigateNext } from "react-icons/md";
 import { TbListDetails } from "react-icons/tb";
-import { Link } from "react-router-dom";
-
-// Sample product data
-const product = {
-  id: 1,
-  name: "Product Name",
-  price: 999,
-  stock: 10,
-  description:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quam velit, vulputate eu pharetra nec.",
-  // Add more fields as needed
-};
-
-const handleAddToCart = (event) => {
-  event.preventDefault();
-  // Handle form submission logic here (if needed)
-  console.log("Add to cart clicked");
-};
-
-// Sample product sub-images data (array of objects)
-const productSubImages = [
-  { id: 1, sub_images: Img },
-  { id: 2, sub_images: Img1 },
-  { id: 3, sub_images: Img2 },
-  // Add more sub-images as needed
-];
-
-// Sample related products data (array of objects)
-const relatedProducts = [
-  {
-    id: 2,
-    name: "Related Product 1",
-    price: 799,
-    image: Img2,
-  },
-  {
-    id: 3,
-    name: "Related Product 2",
-    price: 899,
-    image: Img3,
-  },
-  {
-    id: 4,
-    name: "Related Product 3",
-    price: 1099,
-    image: Img2,
-  },
-  // Add more related products as needed
-];
+import { Link, useParams } from "react-router-dom";
+import {
+  addCart,
+  productDetail,
+} from "../../../store/productAPI/productApiSlice";
 
 const ProductDetails = () => {
-  const [activeIndex, setActiveIndex] = useState(0); // State to track active carousel index
+  const dispatch = useDispatch();
+  const { id } = useParams();
+  const productDetails = useSelector((state) => state.products.productDetails);
+  const loading = useSelector((state) => state.products.loading);
+  const error = useSelector((state) => state.products.error);
+
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  console.log("id", id);
+
+  useEffect(() => {
+    dispatch(productDetail(id));
+  }, []);
+
+  if (!productDetails || !productDetails.data) {
+    return <div className="ms-4">not Found...</div>;
+  }
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  // Assuming productDetails is structured similarly to your backend response
+  const { product, product_sub_images, related_products } = productDetails.data;
+
+  const handleAddToCart = (event) => {
+    event.preventDefault();
+    const productId = product.id; // Assuming product.id is the identifier
+    dispatch(addCart(productId)); // Dispatching addCart action
+  };
 
   const handleSelect = (selectedIndex, e) => {
-    setActiveIndex(selectedIndex); // Update activeIndex state on carousel slide change
+    setActiveIndex(selectedIndex);
   };
 
   return (
@@ -78,7 +64,6 @@ const ProductDetails = () => {
       <Container>
         <Row className="gx-4 mb-5 pb-3 pt-4">
           <Col lg={5}>
-            {/* Image slider */}
             <Carousel
               id="imageSlider"
               activeIndex={activeIndex}
@@ -92,10 +77,10 @@ const ProductDetails = () => {
                 <span className="carousel-control-prev-icon  bg-black" />
               }
             >
-              {productSubImages.map((subImage, index) => (
+              {product_sub_images.map((subImage, index) => (
                 <Carousel.Item key={index}>
                   <Image
-                    src={subImage.sub_images}
+                    src={`http://127.0.0.1:8000${subImage.sub_images}`}
                     className="d-block mx-auto rounded"
                     style={{ maxWidth: "400px" }}
                     alt={`Slide ${index + 1}`}
@@ -104,9 +89,8 @@ const ProductDetails = () => {
                 </Carousel.Item>
               ))}
             </Carousel>
-            {/* Thumbnail navigation */}
             <div className="d-flex justify-content-center mb-3 pt-4">
-              {productSubImages.map((subImage, index) => (
+              {product_sub_images.map((subImage, index) => (
                 <a
                   key={index}
                   className={`border mx-1 rounded-2 ${
@@ -119,7 +103,7 @@ const ProductDetails = () => {
                     width="60"
                     height="60"
                     className="rounded-2"
-                    src={subImage.sub_images}
+                    src={`http://127.0.0.1:8000${subImage.sub_images}`}
                   />
                 </a>
               ))}
@@ -129,10 +113,8 @@ const ProductDetails = () => {
           <Col lg={6} className="pt-6">
             <div className="ps-lg-7">
               <p className="mt-3">
-                Home <MdNavigateNext />
-                Product <MdNavigateNext />
-                Details <MdNavigateNext />
-                <strong>{product.name}</strong>
+                Home <MdNavigateNext /> Product <MdNavigateNext /> Details{" "}
+                <MdNavigateNext /> <strong>{product.name}</strong>
               </p>
               <hr />
               <h1 className="title text-dark mt-4">{product.name}</h1>
@@ -146,8 +128,7 @@ const ProductDetails = () => {
                   <span className="ms-1 me-2 fs-5">4.5</span>
                 </div>
                 <span className="text-muted fs-5">
-                  <BsFillCartCheckFill size={13} />
-                  154+ orders
+                  <BsFillCartCheckFill size={13} /> 154+ orders
                 </span>
                 <span className="text-success ms-2 fs-5">
                   {" "}
@@ -155,8 +136,7 @@ const ProductDetails = () => {
                 </span>
               </div>
               <div className="price text-success fw-bold mt-2">
-                <BsFillGiftFill size={13} className="me-1" />
-                Special price
+                <BsFillGiftFill size={13} className="me-1" /> Special price
               </div>
               <div className="mb-3 mt-3 ">
                 <span className="fs-1 fw-light">
@@ -174,7 +154,6 @@ const ProductDetails = () => {
                 </div>
               </div>
               <Col lg={6}>
-                {/* Form for adding to cart */}
                 <Form onSubmit={handleAddToCart}>
                   <input
                     type="number"
@@ -186,14 +165,14 @@ const ProductDetails = () => {
                   />
                   <Button
                     variant="primary"
-                    className="rounded-pill text-warning fw-bolder ps-5 pe-5 pt-3 pb-3  "
+                    className="rounded-pill fw-bolder ps-5 pe-5 pt-3 pb-3 btn-success bt-success"
                     type="submit"
                   >
-                    Add Cart
+                    Add to Cart
                   </Button>
                   <Link
                     to="/showcart"
-                    className="btn btn-primary rounded-pill ms-2 text-warning fw-bolder ps-5 pe-5 pt-3 pb-3 "
+                    className="btn rounded-pill ms-2 fw-bolder ps-5 pe-5 pt-3 pb-3 btn-success bt-success"
                   >
                     Go to Cart
                   </Link>
@@ -219,7 +198,7 @@ const ProductDetails = () => {
                   <u>Similar items</u>:
                 </h5>
                 <div className="d-flex flex-row flex-wrap">
-                  {relatedProducts.map((relatedProduct, index) => (
+                  {related_products.map((relatedProduct, index) => (
                     <div
                       key={index}
                       className="mr-3 mb-3 d-flex align-items-center"
@@ -230,7 +209,7 @@ const ProductDetails = () => {
                         className="d-flex"
                       >
                         <Image
-                          src={relatedProduct.image}
+                          src={`http://127.0.0.1:8000${relatedProduct.image}`}
                           className="img-md img-thumbnail ms-4 mg-3 "
                         />
                         <div className="d-flex flex-column justify-content-between ms-3 mt-3">

@@ -1,10 +1,18 @@
 import React, { useState } from "react";
 import { Container, Col, Row, Form, Button, Alert } from "react-bootstrap";
-import { BsFillExclamationTriangleFill } from "react-icons/bs"; // Example icon from react-icons
+import { BsFillExclamationTriangleFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { contact } from "../../store/homeAPI/homeApiSlice";
 
 const ContactForm = () => {
-  // Dummy data for form fields
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.categories.loading);
+  const error = useSelector((state) => state.categories.error);
+  const successMessage = useSelector(
+    (state) => state.categories.authData.message
+  );
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -12,7 +20,6 @@ const ContactForm = () => {
   });
 
   const [errors, setErrors] = useState([]);
-  const [successMessage, setSuccessMessage] = useState("");
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -25,24 +32,29 @@ const ContactForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Simulate form validation (replace with actual validation logic)
-    const newErrors = [];
-    if (!formData.name || !formData.email || !formData.message) {
-      newErrors.push("All fields are required");
-    }
-    setErrors(newErrors);
+    // Reset previous errors
+    setErrors([]);
 
-    // Simulate form submission and API call
-    if (newErrors.length === 0) {
-      // Simulate success message
-      setSuccessMessage("Message sent successfully");
-      // Clear form fields (optional)
-      setFormData({
-        name: "",
-        email: "",
-        message: "",
-      });
+    // Simple form validation
+    if (!formData.name || !formData.email || !formData.message) {
+      setErrors(["All fields are required"]);
+      return;
     }
+
+    // Dispatch contact action
+    dispatch(contact(formData))
+      .then(() => {
+        // Clear form on success
+        setFormData({
+          name: "",
+          email: "",
+          message: "",
+        });
+      })
+      .catch((error) => {
+        // Handle errors (you might want to display these in UI)
+        console.error("Error submitting form:", error);
+      });
   };
 
   return (
@@ -51,6 +63,7 @@ const ContactForm = () => {
         <Col md={6}>
           <h3 className="text-center">Contact Us</h3>
           {successMessage && <Alert variant="success">{successMessage}</Alert>}
+          {error && <Alert variant="danger">{error}</Alert>}
           {errors.length > 0 && (
             <Alert variant="danger">
               {errors.map((error, index) => (
@@ -95,13 +108,13 @@ const ContactForm = () => {
               />
             </Form.Group>
 
-            <Link
-              to="/success"
-              className="btn btn-primary"
-              onClick={handleSubmit}
+            <Button
+              className="rounded-pill btn-success bt-success mt-3 px-5 py-3"
+              type="submit"
+              disabled={loading}
             >
-              Submit
-            </Link>
+              {loading ? "Submitting..." : "Submit"}
+            </Button>
           </Form>
         </Col>
       </Row>

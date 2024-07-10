@@ -23,9 +23,10 @@ import Profile from "./pages/user/ProfileControl/Profile";
 import ChangePassword from "./pages/user/ProfileControl/ChangePasswords";
 import UpdateProfile from "./pages/user/ProfileControl/UpdateProfile";
 import ContactForm from "./pages/user/Contact";
+import Header from "./components/user/Header";
+import Footer from "./components/user/Footer";
+import TokenPage from "./pages/user/Token";
 function App() {
-
-
   return (
     <>
       <Routes>
@@ -56,7 +57,7 @@ function App() {
           }
         />
         <Route
-          path="/shop"
+          path="/shop/:id"
           element={
             <>
               <Layouts>
@@ -66,7 +67,7 @@ function App() {
           }
         />
         <Route
-          path="/ProductDetails"
+          path="/product/details/:id"
           element={
             <>
               <Layouts>
@@ -76,7 +77,7 @@ function App() {
           }
         />
         <Route
-          path="/cart"
+          path="/showcart"
           element={
             <>
               <Layouts>
@@ -106,7 +107,7 @@ function App() {
           }
         />
         <Route
-          path="/checkout"
+          path="/checkout/:id"
           element={
             <>
               <Layouts>
@@ -116,7 +117,7 @@ function App() {
           }
         />
         <Route
-          path="/payment-status"
+          path="/payment/:id"
           element={
             <>
               <Layouts>
@@ -161,6 +162,16 @@ function App() {
             <>
               <Layouts>
                 <ContactForm />
+              </Layouts>
+            </>
+          }
+        />
+        <Route
+          path="/token"
+          element={
+            <>
+              <Layouts>
+                <TokenPage />
               </Layouts>
             </>
           }

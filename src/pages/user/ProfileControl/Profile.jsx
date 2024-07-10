@@ -2,6 +2,9 @@ import React from "react";
 import { Container, Card, Button } from "react-bootstrap";
 import { FaKey, FaEdit } from "react-icons/fa";
 import UserImg from "../../../assets/profile.png";
+import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Logout } from "../../../store/authAPI/authApiSlice";
 
 const dummyUserData = {
   name: "John Doeh",
@@ -12,6 +15,12 @@ const dummyUserData = {
 };
 
 const Profile = () => {
+  const dispatch = useDispatch();
+  const handleLogout = () => {
+    console.log("User is attempting to logout...");
+    dispatch(Logout());
+  };
+
   return (
     <Container className="mt-4 mb-4 p-3 d-flex justify-content-center">
       <Card className="p-4">
@@ -32,17 +41,21 @@ const Profile = () => {
             </span>
           </div>
 
-          <form action="/changepassword" method="get">
-            <div className="d-flex mt-2">
-              <Button variant="primary" size="sm">
+          <div className="d-flex mt-2">
+            <Link to="/change-password" className="text-decoration-none">
+              <Button className="btn btn-success text-white rounded-pill mt-3 px-3 py-2">
                 Change Password <FaKey />
               </Button>
-            </div>
-          </form>
+            </Link>
+          </div>
 
           <form action="/profile/edit" method="get">
             <div className="d-flex mt-2">
-              <Button type="submit" variant="primary" size="sm">
+              <Button
+                type="submit"
+                className="btn btn-success text-white rounded-pill mt-2 px-4 py-2"
+                size="sm"
+              >
                 Edit Profile <FaEdit />
               </Button>
             </div>
@@ -72,9 +85,8 @@ const Profile = () => {
           </div>
 
           <Button
-            className="btn btn-default logoutModal"
-            data-toggle="modal"
-            data-target="#logoutModal"
+            onClick={handleLogout}
+            className="btn btn-success text-white rounded-pill mt-3 px-5 py-3"
           >
             <b>Logout</b>
           </Button>
