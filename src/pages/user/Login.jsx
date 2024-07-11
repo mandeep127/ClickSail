@@ -22,9 +22,8 @@ const UserLogin = () => {
       const response = await dispatch(Login({ username, password }));
 
       if (response && response.payload.success.token) {
-        console.log("Token:", response);
+        console.log("Token:", response.payload.success.token);
         localStorage.setItem("token", response.payload.success.token);
-        // sessionStorage.setItem("Email", response.payload.data.email);
         navigate("/");
       } else {
         setError(response.message || "Invalid credentials. Please try again.");

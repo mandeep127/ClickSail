@@ -12,7 +12,7 @@ import { AiOutlineUser } from "react-icons/ai";
 import { Link } from "react-router-dom";
 
 const Header = () => {
-  const userName = "John Doe"; // Replace with actual user name or session data
+  const userName = "John Doe";
 
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
@@ -25,8 +25,6 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    // Implement your logout logic here
-    // For demo purposes, we can just close the modal
     setShowLogoutModal(false);
   };
 

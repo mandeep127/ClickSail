@@ -37,7 +37,7 @@ export const logoutUserApi = async () => {
         Authorization: `Bearer ${token}`,
       },
     });
-    return response.data;
+    return response;
   } catch (error) {
     console.error("Error in Logout API:", error);
     throw error;
