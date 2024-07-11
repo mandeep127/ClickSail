@@ -4,6 +4,7 @@ import { productListApi, productAddApi, productStatusApi, productEditGetApi, pro
 const initialState = {
     loading: false,
     error: "",
+    productsData: [],
     products: [],
     product: []
   };
@@ -99,7 +100,7 @@ export const productDelete = createAsyncThunk(
         .addCase(productList.fulfilled, (state, action) => {
           state.loading = false;
           state.error = "";
-          state.products = action.payload; 
+          state.productsData = action.payload; 
         })
         .addCase(productList.rejected, (state, action) => {
           state.loading = false;

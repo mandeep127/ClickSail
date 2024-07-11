@@ -1,42 +1,66 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Container, Row, Spinner } from "react-bootstrap";
 import { HiUsers } from "react-icons/hi";
 import Dropdown from "react-bootstrap/Dropdown";
 import Button from "react-bootstrap/Button";
 import { FaUserPlus, FaEdit, FaTrash, FaUnlock, FaLock } from "react-icons/fa";
 import Table from "react-bootstrap/Table";
+import ConfirmationDialog from '../../../components/admin/confirmation'; 
 
 import {
   userList,
   deleteUser,
   userStatus,
-} from "../../../adminStore/userApi/userApiSlice"; 
+} from "../../../adminStore/userApi/userApiSlice";
 
 import { useNavigate } from "react-router-dom";
 
 const List = () => {
   const navigate = useNavigate();
-  const { users, loading, error } = useSelector((state) => state.user);
+  const { userLists, loading, error } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [userIdToDelete, setUserIdToDelete] = useState(null);
+
   useEffect(() => {
-    dispatch(userList());
+    setTimeout(() => {
+      dispatch(userList());
+    }, 500);
   }, []);
 
-  const handleStatusUser = async(userId) => {
-   await dispatch(userStatus(userId));
-   dispatch(userList());
-
-  };
-
-  const handleDeleteUser = async(userId) => {
-    await dispatch(deleteUser(userId));
+  const handleStatusUser = async (userId) => {
+    await dispatch(userStatus(userId));
     dispatch(userList());
   };
 
+  //handle delete
+  const handleDeleteSubCategory = async (userId) => {
+    await dispatch(deleteUser(userId));
+    dispatch(userList());
+
+  };
+
+  const openDeleteDialog = (userId) => {
+    setUserIdToDelete(userId);
+    setShowDeleteDialog(true);
+  };
+
+  const closeDeleteDialog = () => {
+    setShowDeleteDialog(false);
+  };
+
+  const confirmDeleteSubCategory = () => {
+    if (userIdToDelete) {
+      handleDeleteSubCategory(userIdToDelete);
+      setShowDeleteDialog(false);
+    }
+  };
+
+
   return (
+    <>
     <Container fluid className="d-flex flex-column">
       <Row>
         <Col>
@@ -46,17 +70,6 @@ const List = () => {
         </Col>
       </Row>
       <Row className="justify-content-between align-items-center">
-        {/* <Col>
-          <h6>Select Role:</h6>
-          <Dropdown className="d-inline mx-2" autoClose="outside">
-            <Dropdown.Toggle id="dropdown-autoclose-outside">
-              Roles
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item href="#">Menu Item</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </Col> */}
         <Col className="d-flex justify-content-end">
           <Button
             onClick={() => {
@@ -71,6 +84,7 @@ const List = () => {
 
       <Row>
         <Col>
+  
           <Table striped bordered hover className="px-2 py-1 mt-3">
             <thead>
               <tr>
@@ -82,51 +96,52 @@ const List = () => {
               </tr>
             </thead>
             <tbody>
-              {users?.users?.map((user, index) => (
+              {userLists?.users?.map((user, index) => (
                 <tr key={index}>
                   <td>{index + 1}</td>
                   <td>{user.username}</td>
                   <td>{user.email}</td>
                   <td>
                     <Button
-                        onClick={() => handleStatusUser(user.id)}
-                        className={`btn ${
-                          user.status === "1"
-                            ? "btn-primary btn-success btn-block":"btn-primary btn-danger btn-block"
-                           
+                      onClick={() => handleStatusUser(user.id)}
+                      className={`btn ${
+                        user.status === "1"
+                        ? "btn-primary btn-success btn-block"
+                        : "btn-primary btn-danger btn-block"
                         }`}
-                      >
-                        <b>
-                          {user.status === "1" ? <FaUnlock /> : <FaLock />}
-                        </b>
-                      </Button>
+                        >
+                      <b>{user.status === "1" ? <FaUnlock /> : <FaLock />}</b>
+                    </Button>
                   </td>
                   {/* <td>
                       <Button
-                        onClick={() => handleStatusSubCategory(subcategory.id)}
-                        className={`btn ${
-                          subcategory.status === "1"
-                            ? "btn-primary btn-success btn-block"
-                            : "btn-primary btn-danger btn-block"
+                      onClick={() => handleStatusSubCategory(subcategory.id)}
+                      className={`btn ${
+                        subcategory.status === "1"
+                        ? "btn-primary btn-success btn-block"
+                        : "btn-primary btn-danger btn-block"
                         }`}
-                      >
+                        >
                         <b>
-                          {subcategory.status === "1" ? (
-                            <FaUnlock />
+                        {subcategory.status === "1" ? (
+                          <FaUnlock />
                           ) : (
                             <FaLock />
-                          )}
-                        </b>
-                      </Button>
-                    </td> */}
+                            )}
+                            </b>
+                            </Button>
+                            </td> */}
                   <td className="display-flex flex-column align-items-center">
-                    <Link to={`/admin/user/edit/${user.id}`} className="btn me-2 btn-info">
+                    <Link
+                      to={`/admin/user/edit/${user.id}`}
+                      className="btn me-2 btn-info"
+                      >
                       <FaEdit />
                     </Link>
                     <Button
-                      onClick={() => handleDeleteUser(user.id)}
+                     onClick={() => openDeleteDialog(user.id)}
                       className="btn btn-danger"
-                    >
+                      >
                       <FaTrash />
                     </Button>
                   </td>
@@ -137,6 +152,13 @@ const List = () => {
         </Col>
       </Row>
     </Container>
+       <ConfirmationDialog
+       show={showDeleteDialog}
+       onClose={closeDeleteDialog}
+       onConfirm={confirmDeleteSubCategory}
+       message="Are you sure you want to delete this user?"
+     />
+     </>
   );
 };
 

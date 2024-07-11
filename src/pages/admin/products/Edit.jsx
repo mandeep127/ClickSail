@@ -25,7 +25,7 @@ const EditProduct = () => {
   const navigate = useNavigate();
 
   const { categories } = useSelector((state) => state.category);
-  const { subcategories } = useSelector((state) => state.subcategory);
+  const { subcategoriesData } = useSelector((state) => state.subcategory);
 
   const { product } = useSelector((state) => state.product);
 
@@ -240,7 +240,7 @@ const EditProduct = () => {
                       aria-label="Select Subcategory"
                     >
                    <option value="">Select SubCategory</option>
-                      {subcategories?.sub_categories?.map((subcategory, index) => (
+                      {subcategoriesData?.sub_categories?.map((subcategory, index) => (
                         <option key={subcategory.id} value={subcategory.id}>
                           {subcategory.name}
                         </option>

@@ -15,15 +15,16 @@ import ConfirmationDialog from '../../../components/admin/confirmation';
 
 const ProductList = () => {
   const navigate = useNavigate()
-  const { products, loading, error } = useSelector((state) => state.product);
+  const { productsData, loading, error } = useSelector((state) => state.product);
   const dispatch = useDispatch();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [productIdToDelete, setProductIdToDelete] = useState(null);
 
   useEffect(() => {
-    dispatch(productList());
-  }, [dispatch]);
-
+    setTimeout(() => {
+      dispatch(productList());
+    }, 500);
+  }, []);
 
   const handleStatusProduct = async(productId) => {
     await dispatch(productStatus(productId));
@@ -111,7 +112,7 @@ const ProductList = () => {
                 </tr>
               </thead>
               <tbody>
-              {products?.products?.map((product, index) => (
+              {productsData?.products?.map((product, index) => (
                   <tr
                     key={index}
                     className={index % 2 === 0 ? "even-row" : "odd-row"}

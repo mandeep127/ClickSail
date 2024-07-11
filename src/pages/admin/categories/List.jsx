@@ -23,7 +23,9 @@ const Categorieslist = () => {
   const [categoryIdToDelete, setCategoryIdToDelete] = useState(null);
 
   useEffect(() => {
+    setTimeout(() => {
     dispatch(categoriesList());
+  }, 500);
   }, []);
 
   const handleStatusCategory = async (categoryId) => {

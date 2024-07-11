@@ -26,12 +26,11 @@ const EditUser = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(userEditGet(id));
+    if(id){
+      dispatch(userEditGet(id));
+    }
   }, [dispatch, id]);
 
-  useEffect(() => {
-    dispatch(userEditPost(id));
-  }, [dispatch, id]);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -56,18 +55,8 @@ const EditUser = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("Form submitted:", formData);
-
     dispatch(userEditPost({ id, data: formData }));
-
-    setFormData({
-      name: "",
-      username: "",
-      email: "",
-      role: "",
-    });
     navigate("/admin/user/list");
-    dispatch(userList());
   };
 
   return (
