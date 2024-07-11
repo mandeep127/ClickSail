@@ -50,8 +50,8 @@ const AddUser = () => {
       confirmPassword: '',
       role: 'user',
     });
+    
     navigate("/admin/user/list");
-    dispatch(userList());
 
   };
 

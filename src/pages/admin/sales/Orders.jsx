@@ -200,7 +200,7 @@ const Orders = () => {
                   <th>Order Status</th>
                   <th>Order Date</th>
                   <th>Action</th>
-                  <th>More</th>
+                  {/* <th>More</th> */}
                 </tr>
               </thead>
               <tbody>
@@ -230,11 +230,11 @@ const Orders = () => {
                     <td className="display-flex flex-column align-items-center">
                       {renderStatusBadge(sale)}{" "}
                     </td>
-                    <td>
+                    {/* <td>
                       <Link to="#" className="text-black">
                         <FaEye />
                       </Link>
-                    </td>
+                    </td> */}
                   </tr>
                 ))}
               </tbody>

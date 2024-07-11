@@ -19,7 +19,7 @@ const AddProduct = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { categories } = useSelector((state) => state.category);
-  const { subcategories } = useSelector((state) => state.subcategory);
+  const { subcategoriesData } = useSelector((state) => state.subcategory);
 
   useEffect(() => {
     dispatch(categoriesList());
@@ -29,7 +29,6 @@ const AddProduct = () => {
     dispatch(subcategoriesList());
   }, []);
 
-console.log(subcategories)
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -86,7 +85,6 @@ console.log(subcategories)
       image: null,
       sub_images: [],
     });
-    dispatch(productList());
 
     navigate("/admin/product/list");
   };
@@ -196,7 +194,7 @@ console.log(subcategories)
                       aria-label="Select Subcategory"
                     >
                    <option value="">Select SubCategory</option>
-                      {subcategories?.sub_categories?.map((subcategory, index) => (
+                      {subcategoriesData?.sub_categories?.map((subcategory, index) => (
                         <option key={subcategory.id} value={subcategory.id}>
                           {subcategory.name}
                         </option>

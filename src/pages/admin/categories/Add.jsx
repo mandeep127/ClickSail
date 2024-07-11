@@ -43,6 +43,7 @@ const AddCat = () => {
     });
 
     navigate("/admin/categories/list");
+    dispatch(categoriesList());
 
   };
 

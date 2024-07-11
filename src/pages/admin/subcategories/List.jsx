@@ -14,15 +14,18 @@ import ConfirmationDialog from '../../../components/admin/confirmation';
 const SubCategoriesList = () => {
 
   const navigate = useNavigate()
-   const { subcategories, loading, error } = useSelector((state) => state.subcategory);
+   const { subcategoriesData, loading, error } = useSelector((state) => state.subcategory);
    const dispatch = useDispatch();
    const [showDeleteDialog, setShowDeleteDialog] = useState(false);
    const [subcategoryIdToDelete, setSubCategoryIdToDelete] = useState(null);
 
+  
    useEffect(() => {
-     dispatch(subcategoriesList());
-   }, [dispatch]);
-
+    setTimeout(() => {
+      dispatch(subcategoriesList());
+    }, 500);
+  }, []);
+  
    const handleStatusSubCategory = async(SubcategoryId) => {
    await dispatch(subcategoriesStatus(SubcategoryId));
    dispatch(subcategoriesList());
@@ -94,7 +97,7 @@ const SubCategoriesList = () => {
                 </tr>
               </thead>
               <tbody>
-                {subcategories?.sub_categories?.map((subcategory, index) => (
+                {subcategoriesData?.sub_categories?.map((subcategory, index) => (
                   <tr
                     key={index}
                     className={index % 2 === 0 ? "even-row" : "odd-row"}

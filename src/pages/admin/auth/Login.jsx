@@ -6,6 +6,9 @@ import { MdEmail, MdLock } from "react-icons/md";
 import adminLogo from "../../../assets/admin-logo.png";
 import { Link, useNavigate } from 'react-router-dom';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -34,12 +37,13 @@ const Login = () => {
       if (authCred.email && authCred.password) {
         const response = await dispatch(AuthLogin(authCred));
         const token = response.payload.data.data.token;
-
+toast.success('logged in successfully')
         // Save token to localStorage
         localStorage.setItem("token", token);
 
         // Navigate to dashboard
-       navigate("/admin/dashboard");
+
+        navigate("/admin/dashboard");
       } else {
         setError({
           email: authCred.email ? "" : "Email is required",
@@ -91,7 +95,7 @@ const Login = () => {
               <MdLock size={45} />
             </Form.Group>
 
-            {error.password && <Form.Text className="text-danger">{error.password}</Form.Text>}
+            <p>{error.password && <Form.Text className="text-danger">{error.password}</Form.Text>}</p>
 
             <Link to="/admin/forgot-password" className="text-primary text-decoration-none">
               Forgot Password?

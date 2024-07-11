@@ -11,6 +11,7 @@ import {
 const initialState = {
   loading: false,
   error: "",
+  subcategoriesData: [],
   subcategories: [],
   subcategory: [],
 };
@@ -109,7 +110,7 @@ const subcategoriesSlice = createSlice({
       .addCase(subcategoriesList.fulfilled, (state, action) => {
         state.loading = false;
         state.error = "";
-        state.subcategories = action.payload;
+        state.subcategoriesData = action.payload;
       })
       .addCase(subcategoriesList.rejected, (state, action) => {
         state.loading = false;

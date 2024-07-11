@@ -10,6 +10,7 @@ const initialState = {
   loading: false,
   error: "",
   users: [],
+  userLists:[],
   user: [],
 };
 
@@ -111,7 +112,7 @@ const userSlice = createSlice({
       .addCase(userList.fulfilled, (state, action) => {
         state.loading = false;
         state.error = "";
-        state.users = action.payload;
+        state.userLists = action.payload;
       })
       .addCase(userList.rejected, (state, action) => {
         state.loading = false;
@@ -171,7 +172,7 @@ const userSlice = createSlice({
       .addCase(userEditPost.fulfilled, (state, action) => {
         state.loading = false;
         state.error = "";
-        state.user = action.payload;
+        // state.user = action.payload;
       })
       .addCase(userEditPost.rejected, (state, action) => {
         state.loading = false;
