@@ -4,6 +4,7 @@ import { BsFillExclamationTriangleFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { contact } from "../../store/homeAPI/homeApiSlice";
+import { toast } from "react-toastify";
 
 const ContactForm = () => {
   const dispatch = useDispatch();
@@ -32,27 +33,20 @@ const ContactForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Reset previous errors
     setErrors([]);
 
-    // Simple form validation
     if (!formData.name || !formData.email || !formData.message) {
       setErrors(["All fields are required"]);
       return;
     }
 
-    // Dispatch contact action
     dispatch(contact(formData))
       .then(() => {
-        // Clear form on success
-        setFormData({
-          name: "",
-          email: "",
-          message: "",
-        });
+        setFormData({ name: "", email: "", message: "" });
+        toast.success("Message sent successfully");
       })
       .catch((error) => {
-        // Handle errors (you might want to display these in UI)
+        toast.error("An error occurred. Please try again.");
         console.error("Error submitting form:", error);
       });
   };
@@ -62,7 +56,7 @@ const ContactForm = () => {
       <Row className="justify-content-md-center pt-4">
         <Col md={6}>
           <h3 className="text-center">Contact Us</h3>
-          {successMessage && <Alert variant="success">{successMessage}</Alert>}
+
           {error && <Alert variant="danger">{error}</Alert>}
           {errors.length > 0 && (
             <Alert variant="danger">

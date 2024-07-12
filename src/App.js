@@ -28,6 +28,7 @@ import Footer from "./components/user/Footer";
 import TokenPage from "./pages/user/Token";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Token from "./pages/user/Token";
 function App() {
   return (
     <>
@@ -51,7 +52,8 @@ function App() {
         <Route path="/login" element={<UserLogin />} />
         <Route path="/register" element={<UserRegister />} />
         <Route path="/forgot-password" element={<UserForgotPassword />} />
-        <Route path="/reset-password" element={<UserResetPassword />} />
+        <Route path="/reset-password/:token" element={<UserResetPassword />} />
+        <Route path="/token" element={<Token />} />
         <Route
           path="*"
           element={

@@ -6,6 +6,8 @@ import userLogo from "../../assets/user.png";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Login } from "../../store/authAPI/authApiSlice";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 const UserLogin = () => {
   const [username, setUsername] = useState("");
@@ -22,14 +24,17 @@ const UserLogin = () => {
       const response = await dispatch(Login({ username, password }));
 
       if (response && response.payload.success.token) {
-        console.log("Token:", response.payload.success.token);
+        console.log("Token:", response.payload);
         localStorage.setItem("token", response.payload.success.token);
+        localStorage.setItem("name", response.payload.data.name);
+        toast.success("logged in successfully");
         navigate("/");
       } else {
         setError(response.message || "Invalid credentials. Please try again.");
       }
     } catch (error) {
       console.error("Login error:", error.message);
+      toast.error("logged in Failed to login. Please try again later.");
       setError("Failed to login. Please try again later.");
     }
   };

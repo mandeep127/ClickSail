@@ -7,10 +7,12 @@ import { TbLocationFilled } from "react-icons/tb";
 import userLogo from "../../assets/user.png";
 import { useDispatch } from "react-redux";
 import { Register } from "../../store/authAPI/authApiSlice";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const UserRegister = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     name: "",
@@ -20,8 +22,8 @@ const UserRegister = () => {
     confirm_password: "",
     address: "",
     pincode: "",
-    role_id: "5", // Default role
-    agreed: true, // Checkbox for terms agreement
+    role_id: "5",
+    agreed: true,
   });
 
   const handleChange = (e) => {
@@ -36,17 +38,16 @@ const UserRegister = () => {
     e.preventDefault();
     try {
       const response = await dispatch(Register(formData));
-      console.log("register", response, "code", response.code);
-      if (response && response.code === 201) {
-        Navigate("/login");
+
+      if (response.payload.code === 201) {
+        navigate("/login");
       } else {
-        setError(
-          "Failed to registration. Please re-fill & check email/username."
-        );
+        setError("Failed. Please re-fill & check email/username.");
+        toast.error("Please check your details and try again.");
       }
     } catch (error) {
-      console.error(error);
       setError("Failed to registration. Please try again later.");
+      toast.error("Registration failed. Please try again later.");
     }
   };
 
@@ -65,6 +66,7 @@ const UserRegister = () => {
             alt="user logo"
           />
           <h4 className="mb-3">Register a new member</h4>
+
           <p className="text-danger">{error}</p>
           <p>
             <a className="text-success text-decoration-none" href="/login">

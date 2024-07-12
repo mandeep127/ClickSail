@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Container, FormLabel } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
@@ -7,14 +7,23 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import { MdAttachEmail } from "react-icons/md";
 import { ForgotPassword } from "../../store/authAPI/authApiSlice";
+import { useNavigate } from "react-router-dom";
 
 const UserForgotPassword = () => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(ForgotPassword({ email }));
+    const response = await dispatch(ForgotPassword({ email }));
+
+    if (response.payload.token) {
+      navigate(`/reset-password/${response.payload.token}`);
+    }
+    // if (response.payload.token) {
+    //   history.push(`/reset-password/${response.payload.token}`);
+    // }
   };
 
   return (

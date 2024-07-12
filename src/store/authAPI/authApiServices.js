@@ -53,3 +53,13 @@ export const forgotPasswordApi = async (data) => {
     throw error;
   }
 };
+
+export const resetPasswordApi = async (data) => {
+  try {
+    const response = await axios.post(`${API_URL}api/reset-password/`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Error in reset Password API:", error);
+    throw error;
+  }
+};
