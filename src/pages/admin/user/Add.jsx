@@ -8,6 +8,7 @@ import { LiaCriticalRole } from 'react-icons/lia';
 import { useDispatch , useSelector} from 'react-redux';
 import { userList, addUser } from '../../../adminStore/userApi/userApiSlice';
 import { Link, useNavigate } from 'react-router-dom';
+import {  toast } from 'react-toastify';
 
 const dummyRoles = [
   { id: 5, name: 'user' },
@@ -40,20 +41,25 @@ const AddUser = () => {
     event.preventDefault();
     console.log('Form submitted:', formData);
 
-    dispatch(addUser(formData));
+    dispatch(addUser(formData))
+      .then(response => {
+        if (response.payload.code === '201') {
+          navigate("/admin/user/list");
+          toast.success('User add successfully')
 
-    setFormData({
-      name: '',
-      username: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-      role: 'user',
-    });
-    
-    navigate("/admin/user/list");
+        } else {
+          console.error('Error adding user:', response);
+          toast.error('Something went wrong!')
 
+        }
+      })
+      .catch(error => {
+        console.error('Error adding user:', error);
+        toast.error('Something went wrong!')
+
+      });
   };
+
 
   return (
     <Container className="p-3">

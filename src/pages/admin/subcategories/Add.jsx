@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { subcategoriesList, addSubCategory } from "../../../adminStore/subCategoriesApi/subcategoriesApiSlice";
 import { categoriesList } from "../../../adminStore/categoriesApi/categoriesApiSlices";
 import { Link, useNavigate } from 'react-router-dom';
+import {  toast } from 'react-toastify';
 
 const AddSubCat = () => {
   const dispatch = useDispatch();
@@ -46,16 +47,21 @@ const AddSubCat = () => {
 
     console.log("Form submitted:", data);
 
-    dispatch(addSubCategory(data));
+    dispatch(addSubCategory(data)).then(response => {
+      console.log(response, "response.payload.code")
+      if (response.payload.code === 201) {
+        navigate("/admin/subcategories/list");
+        toast.success('Subcategories added successfully')
 
-    setFormData({
-      name: "",
-      image: null,
-      category_id: "",
+      } else {
+        toast.error('Something went wrong!')
+
+      }
+    })
+    .catch(error => {
+      toast.error('Something went wrong!')
     });
-    dispatch(subcategoriesList());
-
-    navigate("/admin/subcategories/list");
+  
   };
 
   return (

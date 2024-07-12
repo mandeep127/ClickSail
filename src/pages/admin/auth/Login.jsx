@@ -37,7 +37,7 @@ const Login = () => {
       if (authCred.email && authCred.password) {
         const response = await dispatch(AuthLogin(authCred));
         const token = response.payload.data.data.token;
-toast.success('logged in successfully')
+        toast.success('logged in successfully')
         // Save token to localStorage
         localStorage.setItem("token", token);
 
@@ -45,14 +45,15 @@ toast.success('logged in successfully')
 
         navigate("/admin/dashboard");
       } else {
+        toast.warning('input field required');
+
         setError({
           email: authCred.email ? "" : "Email is required",
           password: authCred.password ? "" : "Password is required",
         });
       }
     } catch (error) {
-      // Handle authentication errors
-      console.error("Authentication error:", error);
+      toast.error('Invalid credentials');
       setError({ email: "Invalid credentials", password: "Invalid credentials" });
     }
   };
@@ -81,7 +82,6 @@ toast.success('logged in successfully')
               <MdEmail size={45} />
             </Form.Group>
 
-            {error.email && <Form.Text className="text-danger">{error.email}</Form.Text>}
 
             <Form.Group className="mb-3 d-flex align-items-center" controlId="formGroupPassword">
               <Form.Control
@@ -95,8 +95,7 @@ toast.success('logged in successfully')
               <MdLock size={45} />
             </Form.Group>
 
-            <p>{error.password && <Form.Text className="text-danger">{error.password}</Form.Text>}</p>
-
+          
             <Link to="/admin/forgot-password" className="text-primary text-decoration-none">
               Forgot Password?
             </Link>
