@@ -7,6 +7,7 @@ import { GrSelect } from "react-icons/gr";
 import { useDispatch , useSelector} from "react-redux";
 import { categoriesList, addCategory } from "../../../adminStore/categoriesApi/categoriesApiSlices";
 import { Link, useNavigate } from 'react-router-dom';
+import {  toast } from 'react-toastify';
 
 const AddCat = () => {
   const dispatch = useDispatch();
@@ -35,20 +36,20 @@ const AddCat = () => {
     data.append("name", formData.name)
     data.append("image",formData.image )
   
-    dispatch(addCategory(data));
-
-    setFormData({
-      name: "",
-      image: null,
+    dispatch(addCategory(data)).then(response => {
+      if (response.payload.code === 201) {
+        navigate("/admin/categories/list");
+        toast.success('Category added successfully')
+      } else {
+        toast.error('Something went wrong!')
+      }
+    })
+    .catch(error => {
+      toast.error('Something went wrong!')
     });
-
-    navigate("/admin/categories/list");
-    dispatch(categoriesList());
 
   };
 
-
-  
   return (
     <Container className="p-3">
       <Row>

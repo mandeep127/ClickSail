@@ -13,6 +13,7 @@ import {
   userEditPost,
 } from "../../../adminStore/userApi/userApiSlice";
 import { Link, useNavigate } from 'react-router-dom';
+import {  toast } from 'react-toastify';
 
 const dummyRoles = [
   { id: 5, name: "user" },
@@ -55,8 +56,20 @@ const EditUser = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    dispatch(userEditPost({ id, data: formData }));
-    navigate("/admin/user/list");
+    dispatch(userEditPost({ id, data: formData })).then(response => {
+      if (response.payload.code === 200) {
+
+        navigate("/admin/user/list");
+        toast.success('User edit successfully')
+
+      } else {
+        toast.error('Something went wrong!')
+      }
+    })
+    .catch(error => {
+      toast.error('Something went wrong!')
+
+    });
   };
 
   return (

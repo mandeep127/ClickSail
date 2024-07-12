@@ -45,7 +45,18 @@ export const forgotPasswordApi = async (data) => {
     const response = await axios.post(`http://a-mdarji.com/api/admin/forgot-password`, data);
     return response;
   } catch (error) {
-    console.error("Error in authLoginApi:", error);
+    console.error("Error in forgotPasswordApi:", error);
+    throw error;
+  }
+};
+
+
+export const resetPasswordPostApi = async (data) => {
+  try {
+    const response = await axios.post(`http://a-mdarji.com/api/admin/reset-password`, data);
+    return response;
+  } catch (error) {
+    console.error("Error in ressetPasswordPostApi:", error);
     throw error;
   }
 };

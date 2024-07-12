@@ -18,7 +18,8 @@ import {
 } from "../../../adminStore/productApi/productApiSlice";
 import { categoriesList } from "../../../adminStore/categoriesApi/categoriesApiSlices";
 import { subcategoriesList } from "../../../adminStore/subCategoriesApi/subcategoriesApiSlice";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const EditProduct = () => {
   const dispatch = useDispatch();
@@ -30,7 +31,6 @@ const EditProduct = () => {
   const { product } = useSelector((state) => state.product);
 
   const { id } = useParams();
-
 
   useEffect(() => {
     dispatch(productEditGet(id));
@@ -44,14 +44,14 @@ const EditProduct = () => {
     dispatch(subcategoriesList());
   }, []);
 
-   const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    price: '',
-    stock : '',
-    category_id: '',
-    sub_category_id: '',
-    image: '',
+  const [formData, setFormData] = useState({
+    name: "",
+    description: "",
+    price: "",
+    stock: "",
+    category_id: "",
+    sub_category_id: "",
+    image: "",
     sub_images: [],
   });
 
@@ -67,11 +67,10 @@ const EditProduct = () => {
   }, [product]);
 
   const handleInputChange = (event) => {
-    if (event.target.name === 'image' || event.target.name === 'sub_images') {
-      if (event.target.name === 'image') {
+    if (event.target.name === "image" || event.target.name === "sub_images") {
+      if (event.target.name === "image") {
         setFormData({ ...formData, image: event.target.files[0] });
-      }
-      else if (event.target.name === 'sub_images') {
+      } else if (event.target.name === "sub_images") {
         setFormData({ ...formData, sub_images: event.target.files });
       }
     } else {
@@ -81,38 +80,37 @@ const EditProduct = () => {
   };
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData()
-    data.append("name", formData.name)
-    data.append("description", formData.description)
+    const data = new FormData();
+    data.append("name", formData.name);
+    data.append("description", formData.description);
     if (formData.image) {
       data.append("image", formData.image);
     }
-    data.append("category_id",formData.category_id )
-    data.append("sub_category_id",formData.sub_category_id )
-    data.append("price",formData.price )
-    data.append("stock",formData.stock )
+    data.append("category_id", formData.category_id);
+    data.append("sub_category_id", formData.sub_category_id);
+    data.append("price", formData.price);
+    data.append("stock", formData.stock);
 
     if (formData.sub_images.length > 0) {
       for (let i = 0; i < formData.sub_images.length; i++) {
-        data.append('sub_images[]', formData.sub_images[i]);
-      }}
+        data.append("sub_images[]", formData.sub_images[i]);
+      }
+    }
 
     console.log("Form submitted:", data);
-    dispatch(productEditPost({ id: id, data: data }));
-
-     setFormData({
-      name: '',
-      description: '',
-      price: '',
-      stock:'',
-      category: '',
-      sub_category: '',
-      image: null,
-      sub_images: [],
-    });
-    dispatch(productList());
-
-    navigate("/admin/product/list");
+    dispatch(productEditPost({ id: id, data: data }))
+      .then((response) => {
+        console.log(response, "response.payload.code");
+        if (response.payload.code === 200) {
+          navigate("/admin/product/list");
+          toast.success("Product edit successfully");
+        } else {
+          toast.error("Something went wrong!");
+        }
+      })
+      .catch((error) => {
+        toast.error("Something went wrong!");
+      });
   };
 
   return (
@@ -212,7 +210,7 @@ const EditProduct = () => {
                       className="rounded-pill"
                       aria-label="Select Category"
                     >
-                     <option value="">Select Category</option>
+                      <option value="">Select Category</option>
                       {categories?.categories?.map((category, index) => (
                         <option key={category.id} value={category.id}>
                           {category.name}
@@ -239,12 +237,14 @@ const EditProduct = () => {
                       className="rounded-pill"
                       aria-label="Select Subcategory"
                     >
-                   <option value="">Select SubCategory</option>
-                      {subcategoriesData?.sub_categories?.map((subcategory, index) => (
-                        <option key={subcategory.id} value={subcategory.id}>
-                          {subcategory.name}
-                        </option>
-                      ))}
+                      <option value="">Select SubCategory</option>
+                      {subcategoriesData?.sub_categories?.map(
+                        (subcategory, index) => (
+                          <option key={subcategory.id} value={subcategory.id}>
+                            {subcategory.name}
+                          </option>
+                        )
+                      )}
                     </Form.Select>
                   </Form.Group>
                 </div>

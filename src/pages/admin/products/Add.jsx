@@ -14,6 +14,7 @@ import { addProduct, productList } from "../../../adminStore/productApi/productA
 import { categoriesList } from "../../../adminStore/categoriesApi/categoriesApiSlices";
 import { subcategoriesList } from "../../../adminStore/subCategoriesApi/subcategoriesApiSlice";
 import { Link, useNavigate } from 'react-router-dom';
+import {  toast } from 'react-toastify';
 
 const AddProduct = () => {
   const dispatch = useDispatch();
@@ -73,20 +74,19 @@ const AddProduct = () => {
       }}
 
     console.log('Form submitted:', formData);
-    dispatch(addProduct(data));
+    dispatch(addProduct(data)).then(response => {
+      console.log(response, "response.payload.code")
+      if (response.payload.code === 201) {
+        navigate("/admin/product/list");
+        toast.success('Product added successfully')
 
-    setFormData({
-      name: '',
-      description: '',
-      price: '',
-      stock:'',
-      category: '',
-      sub_category: '',
-      image: null,
-      sub_images: [],
+      } else {
+        toast.error('Something went wrong!')
+      }
+    })
+    .catch(error => {
+      toast.error('Something went wrong!')
     });
-
-    navigate("/admin/product/list");
   };
 
   return (

@@ -12,13 +12,13 @@ import {
   categoryEditPost,
 } from "../../../adminStore/categoriesApi/categoriesApiSlices";
 import { Link, useNavigate } from 'react-router-dom';
+import {  toast } from 'react-toastify';
 
 const EditCat = () => {
   const dispatch = useDispatch();
   const { category } = useSelector((state) => state.category);
   const { id } = useParams();
   const navigate = useNavigate();
-
 
   useEffect(() => {
     dispatch(categoryEditGet(id));
@@ -53,17 +53,19 @@ const EditCat = () => {
     data.append("name", formData.name)
     data.append("image",formData.image )
 
-    await dispatch(categoryEditPost({ id, data: data }));
-
-    setFormData({
-      name: '',
-      image: null,
+    await dispatch(categoryEditPost({ id, data: data })).then(response => {
+      if (response.payload.code === 200) {
+        navigate("/admin/categories/list");
+        toast.success('Category edit successfully')
+      } else {
+        toast.error('Something went wrong!')
+      }
+    })
+    .catch(error => {
+      toast.error('Something went wrong!')
     });
-    navigate("/admin/categories/list");
-    dispatch(categoriesList());
-  };
 
-  console.log('formData', formData)
+  };
 
   return (
     <Container className="p-3">

@@ -14,6 +14,7 @@ import {
 } from "../../../adminStore/subCategoriesApi/subcategoriesApiSlice";
 import { categoriesList } from "../../../adminStore/categoriesApi/categoriesApiSlices";
 import { Link, useNavigate } from "react-router-dom";
+import {  toast } from 'react-toastify';
 
 const EditSubCat = () => {
   const dispatch = useDispatch();
@@ -64,15 +65,19 @@ const EditSubCat = () => {
 
     console.log("Form submitted:", data);
 
-    dispatch(subCategoryEditPost({ id: id, data: data }));
-    setFormData({
-      name: "",
-      image: null,
-      category_id: "",
-    });
-    dispatch(subcategoriesList());
+    dispatch(subCategoryEditPost({ id: id, data: data })).then(response => {
+      console.log(response, "response.payload.code")
+      if (response.payload.code === '201') {
+        navigate("/admin/subcategories/list");
+        toast.success('Subcategories edit successfully')
 
-    navigate("/admin/subcategories/list");
+      } else {
+        toast.error('Something went wrong!')
+      }
+    })
+    .catch(error => {
+      toast.error('Something went wrong!')
+    });
   };
 
   return (

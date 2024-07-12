@@ -156,7 +156,7 @@ const AdminSidebar = () => {
                       to={tile.link1}
                       className="text-white text-decoration-none d-block p-2"
                     >
-                      <FaRegCircle className="ms-2 me-2" /> {tile.name}
+                      <FaSearch className="ms-2 me-2" /> {tile.name}
                     </Link>
                   </li>
                 ))}

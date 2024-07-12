@@ -1,11 +1,18 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { authLoginApi, authLogoutApi, forgotPasswordApi } from "./authApiServices";
+import {
+  authLoginApi,
+  authLogoutApi,
+  forgotPasswordApi,
+  resetPasswordPostApi,
+} from "./authApiServices";
 
 const initialState = {
   loading: false,
   error: "",
   authData: null,
-  token : []
+  token: [],
+  linkToken: [],
+  changedPassword:[]
 };
 
 export const AuthLogin = createAsyncThunk(
@@ -25,7 +32,7 @@ export const AuthLogout = createAsyncThunk(
   async (credentials, thunkAPI) => {
     try {
       const response = await authLogoutApi();
-      return response; 
+      return response;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
     }
@@ -38,7 +45,20 @@ export const forgotPassword = createAsyncThunk(
   async (data, thunkAPI) => {
     try {
       const response = await forgotPasswordApi(data);
-      return response; 
+      return response;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+
+//post forgot password
+export const resetPasswordPost = createAsyncThunk(
+  "auth/ressetPasswordPost",
+  async (data, thunkAPI) => {
+    try {
+      const response = await resetPasswordPostApi(data);
+      return response?.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
     }
@@ -48,9 +68,7 @@ export const forgotPassword = createAsyncThunk(
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {
-   
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(AuthLogin.pending, (state) => {
@@ -81,8 +99,8 @@ const authSlice = createSlice({
         state.error = action.payload;
       })
 
-       //forgot-password
-       .addCase(forgotPassword.pending, (state) => {
+      //forgot-password
+      .addCase(forgotPassword.pending, (state) => {
         state.loading = true;
         state.error = "";
       })
@@ -94,8 +112,21 @@ const authSlice = createSlice({
       .addCase(forgotPassword.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      //reset-password link get
+      .addCase(resetPasswordPost.pending, (state) => {
+        state.loading = true;
+        state.error = "";
+      })
+      .addCase(resetPasswordPost.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = "";
+        state.changedPassword = action.payload;
+      })
+      .addCase(resetPasswordPost.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
-  
   },
 });
 
