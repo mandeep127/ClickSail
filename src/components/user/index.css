@@ -2,8 +2,25 @@
 /* Start */
 
 /* start header */
+.imgClick:hover {
+  opacity: 0.8;
+  }
+
+  .imgHover:hover{
+    opacity: 0.7;
+  }
+
+  .shopImgHover:hover{
+    opacity: 0.9;
+  }
+
 .custom-navbar .nav-link.active {
   font-weight: 800; 
+}
+
+.custom-carousel-image {
+  max-width: 420px; 
+  max-height: 400px; 
 }
 
 .custom-navbar .nav-link.active::after,
@@ -51,8 +68,13 @@
    }
    
    .product-item:hover .img-fluid {
-     transform: translateY(-25px);
-   }
+     transform: translateY(-19px);
+     background-color: #00000011;
+     -webkit-transform: translateY(-19px);
+     -moz-transform: translateY(-19px);
+     -ms-transform: translateY(-19px);
+     -o-transform: translateY(-19px);
+}
    
    .product-item .product-title {
      transition: transform 0.5s ease, opacity 0.5s ease;

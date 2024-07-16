@@ -41,15 +41,18 @@ const Shop = () => {
                   href={`/product/details/${products.id}`}
                   className="product-item text-decoration-none text-dark"
                 >
-                  <img
-                    src={`http://127.0.0.1:8000${products.image}`}
-                    className="img-fluid rounded-2"
-                    alt={products.name}
-                  />
-                  <h3 className="text-center fs-4 pt-4">{products.name}</h3>
-                  <p className="text-center fs-5 pt-1 pb-4 fw-bold">
-                    <strong>₹{products.price}/-</strong>
-                  </p>
+                  <div className="img-fluid rounded-4 mb-4">
+                    <img
+                      src={`http://127.0.0.1:8000${products.image}`}
+                      className="img-fluid rounded-3 shopImgHover"
+                      style={{ maxHeight: "312px", maxWidth: "312px" }}
+                      alt={products.name}
+                    />
+                    <h3 className="text-center fs-4 pt-4 ">{products.name}</h3>
+                    <p className="text-center fs-5  mt-1 mb-4 pb-4 fw-bold">
+                      <strong>₹{products.price}/-</strong>
+                    </p>
+                  </div>
                 </a>
               </div>
             ))}

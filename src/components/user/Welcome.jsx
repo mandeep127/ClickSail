@@ -122,11 +122,15 @@ const WelcomePage = () => {
                   key={category.id}
                   className="col-12 col-md-4 col-lg-3 mb-5 mb-md-0"
                 >
-                  <a href={`/shop/${category.id}`} className="product-item">
+                  <a
+                    href={`/shop/${category.id}`}
+                    className="imgClick product-item"
+                  >
                     <img
                       src={`http://127.0.0.1:8000${category.image}`}
                       alt={category.name}
-                      className="img-fluid product-thumbnail rounded-4 rounded-bottom-0"
+                      className="img-fluid product-thumbnail rounded-4"
+                      style={{ maxHeight: "312px", maxWidth: "312px" }}
                     />
                     <h3 className="product-title fw-bold text-center text-white bg-secondary display-5 fs-5 pt-3">
                       {category.name}
@@ -140,6 +144,7 @@ const WelcomePage = () => {
           </div>
         </div>
         {/* End Product Section  */}
+
         {/* start why choose us */}
         <div className="why-choose-section .custom-padding pt-5 mt-5 pb-5 mb-5">
           <Container>
@@ -264,6 +269,64 @@ const WelcomePage = () => {
         </div>
 
         {/*End we help */}
+      </div>
+
+      {/* Recent Products Section */}
+      <div
+        className="recent-products-section pt-5 pb-5 mt-5 mb-5"
+        style={{ paddingLeft: "90px", paddingRight: "-60px" }}
+      >
+        <div className="container pl-4 mb-5 mt-5 pb-5">
+          <Row>
+            {authData.product?.map((product) => (
+              <Col key={product.id} md={2} className="mb-4 mt-4">
+                <div className="product-item d-flex">
+                  <a
+                    href={`/product/details/${product.id}`}
+                    style={{ textDecoration: "none", color: "inherit" }}
+                    className="d-flex"
+                  >
+                    <img
+                      src={`http://127.0.0.1:8000${product.image}`}
+                      alt={product.name}
+                      style={{ maxHeight: "200px", maxWidth: "200px" }}
+                      className="rounded-4 mr-3"
+                    />
+                  </a>
+                  <div>
+                    <h3 className="product-title text-white">{product.name}</h3>
+                  </div>
+                </div>
+              </Col>
+            ))}
+            <Col md={5} className="d-flex align-items-center ps-5 ms-5">
+              <div>
+                {/* <h2 className="section-title mb-4">- New Arrivals</h2> */}
+                <h2 className="section-title mb-4">
+                  Latest Trends in New Arrivals
+                </h2>
+
+                <p className="mb-4 lh-bold fs-5 gray-text">
+                  Discover our latest styles that blend trendsetting designs
+                  with ultimate comfort. From bold prints to classic cuts, our
+                  new arrivals have something for everyone.
+                </p>
+                {/* <ul className="mb-4">
+                  <li>Exclusive Designs and Unique Styles</li>
+                  <li>Seasonal Trends and Fashion Forward Choices</li>
+                  <li>High-Quality Materials and Craftsmanship</li>
+                </ul> */}
+                <Button
+                  href="/shop/new-arrivals"
+                  variant="outline-dark"
+                  className="rounded-pill mt-3 px-5 py-3 btn-white "
+                >
+                  <span className="fw-bold ">Explore</span>
+                </Button>
+              </div>
+            </Col>
+          </Row>
+        </div>
       </div>
 
       {/* Start Testimonials Section */}

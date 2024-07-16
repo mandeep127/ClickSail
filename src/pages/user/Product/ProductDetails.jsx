@@ -18,6 +18,7 @@ import {
   addCart,
   productDetail,
 } from "../../../store/productAPI/productApiSlice";
+import "../../../components/user/index.css";
 
 const ProductDetails = () => {
   const dispatch = useDispatch();
@@ -51,8 +52,8 @@ const ProductDetails = () => {
 
   const handleAddToCart = (event) => {
     event.preventDefault();
-    const productId = product.id; // Assuming product.id is the identifier
-    dispatch(addCart(productId)); // Dispatching addCart action
+    const productId = product.id;
+    dispatch(addCart(productId));
   };
 
   const handleSelect = (selectedIndex, e) => {
@@ -62,27 +63,32 @@ const ProductDetails = () => {
   return (
     <section className="py-5">
       <Container>
-        <Row className="gx-4 mb-5 pb-3 pt-4">
+        <Row className="gx-4 mb-5 pb-3 pt-3">
           <Col lg={5}>
             <Carousel
               id="imageSlider"
               activeIndex={activeIndex}
               onSelect={handleSelect}
-              interval={null}
               pause={false}
+              interval={2000}
               nextIcon={
-                <span className="carousel-control-next-icon  bg-black" />
+                <span
+                  className="carousel-control-next-icon bg-black rounded-1 mr-4"
+                  style={{ marginLeft: "-73px" }}
+                />
               }
               prevIcon={
-                <span className="carousel-control-prev-icon  bg-black" />
+                <span
+                  className="carousel-control-prev-icon bg-black rounded-1 ml-4"
+                  style={{ marginRight: "-73px" }}
+                />
               }
             >
               {product_sub_images.map((subImage, index) => (
                 <Carousel.Item key={index}>
                   <Image
                     src={`http://127.0.0.1:8000${subImage.sub_images}`}
-                    className="d-block mx-auto rounded"
-                    style={{ maxWidth: "400px" }}
+                    className="d-block mx-auto rounded-3 shopImgHover custom-carousel-image"
                     alt={`Slide ${index + 1}`}
                     fluid
                   />
@@ -93,7 +99,7 @@ const ProductDetails = () => {
               {product_sub_images.map((subImage, index) => (
                 <a
                   key={index}
-                  className={`border mx-1 rounded-2 ${
+                  className={`border mx-1 rounded-2  imgHover ${
                     activeIndex === index ? "active" : ""
                   }`}
                   onClick={() => setActiveIndex(index)}
@@ -192,7 +198,7 @@ const ProductDetails = () => {
         {/* Similar items */}
         <Row>
           <Col>
-            <div className="card">
+            <div className="card rounded-4">
               <div className="card-body ms-5">
                 <h5 className="card-title">
                   <u>Similar items</u>:
@@ -210,7 +216,7 @@ const ProductDetails = () => {
                       >
                         <Image
                           src={`http://127.0.0.1:8000${relatedProduct.image}`}
-                          className="img-md img-thumbnail ms-4 mg-3 "
+                          className="img-md img-thumbnail ms-4 mg-3 imgHover rounded-4"
                         />
                         <div className="d-flex flex-column justify-content-between ms-3 mt-3">
                           <div>
