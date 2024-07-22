@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Container, Card, Button } from "react-bootstrap";
 import { FaKey, FaEdit } from "react-icons/fa";
 import UserImg from "../../../assets/profile.png";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Logout } from "../../../store/authAPI/authApiSlice";
+import { showUserProfileApi } from "../../../store/userAPI/userApiServices";
 
 const dummyUserData = {
   name: "John Doeh",
@@ -16,6 +17,14 @@ const dummyUserData = {
 
 const Profile = () => {
   const dispatch = useDispatch();
+  // const { authData, loading, error } = useSelector((state) => state.auth);
+
+  // console.log("Loading", authData);
+
+  // useEffect(() => {
+  //   dispatch(showUserProfileApi());
+  // }, [dispatch]);
+
   const handleLogout = () => {
     console.log("User is attempting to logout...");
     dispatch(Logout());

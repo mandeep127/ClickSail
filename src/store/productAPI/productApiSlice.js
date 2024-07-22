@@ -14,7 +14,8 @@ const initialState = {
   loading: false,
   error: "",
   authData: "",
-  productDetails: null,
+  productDetails: "",
+  addProduct: "",
 };
 
 export const product = createAsyncThunk(
@@ -153,7 +154,7 @@ const productsSlice = createSlice({
       .addCase(addCart.fulfilled, (state, action) => {
         state.loading = false;
         state.error = "";
-        state.productDetails = action.payload;
+        state.addProduct = action.payload;
       })
       .addCase(addCart.rejected, (state, action) => {
         state.loading = false;

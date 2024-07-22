@@ -19,6 +19,7 @@ import {
   productDetail,
 } from "../../../store/productAPI/productApiSlice";
 import "../../../components/user/index.css";
+import { toast } from "react-toastify";
 
 const ProductDetails = () => {
   const dispatch = useDispatch();
@@ -29,31 +30,43 @@ const ProductDetails = () => {
 
   const [activeIndex, setActiveIndex] = useState(0);
 
-  console.log("id", id);
-
   useEffect(() => {
     dispatch(productDetail(id));
-  }, []);
-
-  if (!productDetails || !productDetails.data) {
-    return <div className="ms-4">not Found...</div>;
-  }
+  }, [dispatch, id]);
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  if (error) {
-    return <div>Error: {error}</div>;
+  // if (error) {
+  //   return <div>Error: {error.message}</div>;
+  // }
+
+  if (!productDetails || !productDetails.data) {
+    return <div className="ms-4">Product not found...</div>;
   }
 
-  // Assuming productDetails is structured similarly to your backend response
   const { product, product_sub_images, related_products } = productDetails.data;
 
-  const handleAddToCart = (event) => {
+  console.log("data", productDetails);
+
+  const handleAddToCart = async (event) => {
     event.preventDefault();
     const productId = product.id;
-    dispatch(addCart(productId));
+    try {
+      await dispatch(addCart(productId)).then((response) => {
+        console.log("Response from addCart:", response);
+        toast.success("Added to cart successfully.");
+        if (response.payload.code == 201) {
+          toast.success("Added to cart successfully.");
+        } else {
+          toast.warn(response.payload.message);
+        }
+      });
+    } catch (error) {
+      toast.error("Failed to add to cart.");
+      console.error("Error adding to cart:", error);
+    }
   };
 
   const handleSelect = (selectedIndex, e) => {
@@ -84,35 +97,37 @@ const ProductDetails = () => {
                 />
               }
             >
-              {product_sub_images.map((subImage, index) => (
-                <Carousel.Item key={index}>
-                  <Image
-                    src={`http://127.0.0.1:8000${subImage.sub_images}`}
-                    className="d-block mx-auto rounded-3 shopImgHover custom-carousel-image"
-                    alt={`Slide ${index + 1}`}
-                    fluid
-                  />
-                </Carousel.Item>
-              ))}
+              {product_sub_images &&
+                product_sub_images.map((subImage, index) => (
+                  <Carousel.Item key={index}>
+                    <Image
+                      src={`http://127.0.0.1:8000${subImage.sub_images}`}
+                      className="d-block mx-auto rounded-3 shopImgHover custom-carousel-image"
+                      alt={`Slide ${index + 1}`}
+                      fluid
+                    />
+                  </Carousel.Item>
+                ))}
             </Carousel>
             <div className="d-flex justify-content-center mb-3 pt-4">
-              {product_sub_images.map((subImage, index) => (
-                <a
-                  key={index}
-                  className={`border mx-1 rounded-2  imgHover ${
-                    activeIndex === index ? "active" : ""
-                  }`}
-                  onClick={() => setActiveIndex(index)}
-                >
-                  <Image
-                    id={`thumb-${index}`}
-                    width="60"
-                    height="60"
-                    className="rounded-2"
-                    src={`http://127.0.0.1:8000${subImage.sub_images}`}
-                  />
-                </a>
-              ))}
+              {product_sub_images &&
+                product_sub_images.map((subImage, index) => (
+                  <a
+                    key={index}
+                    className={`border mx-1 rounded-2  imgHover ${
+                      activeIndex === index ? "active" : ""
+                    }`}
+                    onClick={() => setActiveIndex(index)}
+                  >
+                    <Image
+                      id={`thumb-${index}`}
+                      width="60"
+                      height="60"
+                      className="rounded-2"
+                      src={`http://127.0.0.1:8000${subImage.sub_images}`}
+                    />
+                  </a>
+                ))}
             </div>
           </Col>
 
@@ -204,33 +219,34 @@ const ProductDetails = () => {
                   <u>Similar items</u>:
                 </h5>
                 <div className="d-flex flex-row flex-wrap">
-                  {related_products.map((relatedProduct, index) => (
-                    <div
-                      key={index}
-                      className="mr-3 mb-3 d-flex align-items-center"
-                    >
-                      <a
-                        href={`/product/details/${relatedProduct.id}`}
-                        style={{ textDecoration: "none", color: "inherit" }}
-                        className="d-flex"
+                  {related_products &&
+                    related_products.map((relatedProduct, index) => (
+                      <div
+                        key={index}
+                        className="mr-3 mb-3 d-flex align-items-center"
                       >
-                        <Image
-                          src={`http://127.0.0.1:8000${relatedProduct.image}`}
-                          className="img-md img-thumbnail ms-4 mg-3 imgHover rounded-4"
-                        />
-                        <div className="d-flex flex-column justify-content-between ms-3 mt-3">
-                          <div>
-                            <p className="mb-1 fw-bold">
-                              {relatedProduct.name}
-                            </p>
-                            <p className="text-dark mb-0">
-                              ₹ {relatedProduct.price}/-
-                            </p>
+                        <a
+                          href={`/product/details/${relatedProduct.id}`}
+                          style={{ textDecoration: "none", color: "inherit" }}
+                          className="d-flex"
+                        >
+                          <Image
+                            src={`http://127.0.0.1:8000${relatedProduct.image}`}
+                            className="img-md img-thumbnail ms-4 mg-3 imgHover rounded-4"
+                          />
+                          <div className="d-flex flex-column justify-content-between ms-3 mt-3">
+                            <div>
+                              <p className="mb-1 fw-bold">
+                                {relatedProduct.name}
+                              </p>
+                              <p className="text-dark mb-0">
+                                ₹ {relatedProduct.price}/-
+                              </p>
+                            </div>
                           </div>
-                        </div>
-                      </a>
-                    </div>
-                  ))}
+                        </a>
+                      </div>
+                    ))}
                 </div>
               </div>
             </div>

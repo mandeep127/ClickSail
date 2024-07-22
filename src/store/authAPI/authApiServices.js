@@ -29,7 +29,7 @@ export const registerUserApi = async (data) => {
   }
 };
 
-export const logoutUserApi = async () => {
+export const logoutUserApi = async (data) => {
   try {
     const token = localStorage.getItem("token");
     const response = await axios.post(`${API_URL}api/logout`, null, {

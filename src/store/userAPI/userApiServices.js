@@ -27,7 +27,7 @@ export const ordersDetailsApi = async (data) => {
 export const showUserProfileApi = async (data) => {
   try {
     const response = await axios.get(`${API_URL}/profile`, data);
-    return response;
+    return response.data;
   } catch (error) {
     console.error("Error in Api:", error);
     throw error;

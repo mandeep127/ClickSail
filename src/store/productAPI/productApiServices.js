@@ -39,7 +39,7 @@ export const addCartApi = async (data) => {
       `${API_URL}/addcart/${data}`,
       data
     );
-    return response;
+    return response.data;
   } catch (error) {
     console.error("Error in Api:", error);
     throw error;
